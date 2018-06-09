@@ -43,7 +43,7 @@ export class ChekerComponent implements OnInit {
 
 
   ngOnInit() {
-    this.fb.getRest().subscribe(x => {
+    this.fb.getRestObservable().subscribe(x => {
       this.restRoot = this.fb.getRestRoot();
       this.restID = x;
       this.newIncomingOrder();
