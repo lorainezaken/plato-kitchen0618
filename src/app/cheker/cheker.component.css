@@ -1,0 +1,97 @@
+.meal{
+	background: #fafafa;
+	border-bottom: 2px solid #e5e4e4; 
+	min-height: 130px;	
+}
+.photo{
+	/* background:url("https://firebasestorage.googleapis.com/v0/b/plato-7fb01.appspot.com/o/Kibuz-222%2FmealsPics%2FkornBifBurger.png?alt=media&token=1ead5eaa-e7b1-47f3-9ae0-0e56308c92fb"); */
+	background-repeat: no-repeat; 
+	background-size:100% 100%; 
+	height: 100px;
+	width: 100px;
+	border: 1px solid black;
+	margin:10px;
+	float:left;
+	cursor: pointer;
+}
+.dishCont {
+    width: 100%;
+    height: 150px; 
+    background: #fafafa;
+	border-bottom: 2px solid #e5e4e4; 
+}
+.dishItem{
+	float:left;
+	width:330px;
+}
+.dishDetails{
+	float:left;
+	margin:30px auto 0;
+	width:50px;
+	line-height: 40px;
+	cursor: pointer;
+}
+.accor{
+	height:150px;
+	display:block;
+	width:100%;
+}
+
+.dishList{float:left;margin:30px auto 0;width:50px;line-height: 40px;cursor: pointer;}
+
+.dishItem{width:120px;}
+
+.accor p{text-align: left;margin:10px 0 0 20px;}
+
+.dishButtons{
+	float:right;
+	width:200px;
+	margin:10px;
+}
+.greenBox{
+	height: 100px;
+	width: 100px;
+	float:right;
+	background:url(/assets/images/bellbutton.png) no-repeat;
+}
+
+.orangeBox{
+	height: 100px;
+	width: 100px;
+	float:right;
+	background:url(/assets/images/return.png) no-repeat;
+}
+
+.clearAfter:after{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.greyBox{
+	height: 250px;
+	width: 100%;
+	background: #4a4a4a;
+	position: relative;
+	top:150px;
+}
+
+.boxes{
+	float:right;
+}
+.itemName{
+    float:left;
+    position:relative;
+    top:65px;
+    left:30px;
+}
+
+.getDish{
+	float:left;
+	width:700px;
+	cursor: pointer;
+}
+
+.description{
+	margin: 10px 0 20px;
+}

@@ -1,0 +1,18 @@
+<div id="header">
+    <ul>
+        <li>Rest:
+            <select (change)="restChanged($event)" [(ngModel)]="selectedRest">
+                <option *ngFor="let rest of userInfo.rests" [value]='rest'>{{rest}}</option>
+            </select>
+        </li>
+        <li>{{userInfo.email}}</li>
+        <li><a href="/home">Home</a>
+        <a href="/hot">Hotplate</a>
+        <a href="/cold">Coldplate</a>
+        <a href="/drinks">Drinks</a>
+        <a href="/stove">Stove</a>
+        <a href="/cheker">Cheker</a>
+        </li>
+        <li><button (click)="logout()">Log Out</button></li>
+    </ul>
+</div>

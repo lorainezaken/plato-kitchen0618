@@ -1,0 +1,11 @@
+<section>
+  <div class="dishCont" *ngFor="let dish of dishesInMaking">
+    <kitchen-item-in-making [restID]="restID" [dish]="dish" (onDone)="dishInMakingCompleted(dish)"></kitchen-item-in-making>
+  </div>
+  <div class="dishCont" *ngFor="let dish of dishesWaitingForMaking">
+    <kitchen-item-waiting-for-making [restID]="restID" [dish]="dish" (onStartedMaking)="startedMakingWaitingDish(dish)"></kitchen-item-waiting-for-making>
+  </div>
+  <div class="dishCont" *ngFor="let dish of dishesNotInMaking">
+    <kitchen-item [restID]="restID" [dish]="dish" (onStartedMaking)="startedMakingDish(dish)"></kitchen-item>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+<div>
+  <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}"></div>
+
+  <div class="dishDetails">
+    {{dish.name}}
+    <div>{{dish.orderId}}</div>
+  </div>
+  <div class="dishButtons clearAfter">
+    <div class="redBox" title="delete" (click)="deleteDish(dish)"></div>
+    <div class="orangeBox" title="change status" (click)="updateInP(dish)"></div>
+    <div class="greenBox" (click)="updateDone(dish)"></div>
+  </div>
+</div>

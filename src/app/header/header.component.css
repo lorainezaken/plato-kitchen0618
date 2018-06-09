@@ -1,0 +1,17 @@
+#header{
+    display:block;
+	height: 50px;
+	background: #4a4a4a;
+	width: 100%;
+    text-align: center;
+}
+
+#header ul{ list-style-type: none;}
+
+#header ul li {float:left;margin:0 0 0 10px;line-height: 45px;}
+
+#header ul li a{color:#ffff;}
+
+#header ul li a:active {
+    font-weight:bold;
+}

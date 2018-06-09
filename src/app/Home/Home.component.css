@@ -1,0 +1,19 @@
+ul li{
+	border-bottom: 2px solid #e5e4e4; 
+	font-size: 26px;
+	text-align: left;
+	height: 70px;
+	margin-bottom: 20px;
+
+}
+.clear{
+	clear:both;
+}
+.Box{
+	background: #A9A9A9;
+	height: 40px;
+	width: 50px;
+	border: 1px solid black;
+	border-radius: 30%;
+	float: right;
+}
