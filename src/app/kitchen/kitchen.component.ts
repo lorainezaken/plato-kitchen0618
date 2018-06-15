@@ -7,6 +7,7 @@ import { Order } from '../order/order';
 import { UserInfo } from 'app/services/auth/UserInfo.model';
 import { AuthService } from 'app/services/auth/auth.service';
 import { Router } from '@angular/router';
+const uuidv4 = require('uuid/v4');
 
 export const enum dishStatus {
   new,
@@ -74,6 +75,7 @@ export class KitchenComponent implements OnInit {
           this.dishesWaitingForMaking = [];
           this.dishesNotInMaking = [];
           this.ordersService.getAll(this.restID).subscribe(x => {
+
             const ordersInMaking = x.filter(order => order.startedMaking);
             const ordersNotInMaking = x.filter(order => !order.startedMaking);
             this.dishesWaitingForMaking = [];
@@ -84,6 +86,7 @@ export class KitchenComponent implements OnInit {
                 if (!this.isAdmin && dish.category.toLowerCase() !== this.userInfo.role) {
                   return;
                 }
+                dish.uuid = uuidv4();
                 dish.startedMaking = order.startedMaking;
                 dish.orderId = order.id;
                 dish.longestDishInOrder = this.dishesForOrder[order.id].longestDishTime.seconds;
@@ -99,7 +102,7 @@ export class KitchenComponent implements OnInit {
               })
             })
             this.dishesNotInMaking = [];
-            ordersNotInMaking.forEach(order => {
+            ordersNotInMaking.forEach((order: any) => {
               Object.keys(this.dishesForOrder[order.id].dishes).forEach(dishName => {
                 const dish = this.dishesForOrder[order.id].dishes[dishName];
                 console.log(dish);
@@ -107,14 +110,16 @@ export class KitchenComponent implements OnInit {
                   console.log(dish);
                   return;
                 }
+                console.log(uuidv4);
+                dish.uuid = uuidv4();
                 dish.startedMaking = order.startedMaking;
                 dish.orderId = order.id;
                 dish.isLongest = this.dishesForOrder[order.id].longestDishTime.dishId === dishName;
+                dish.orderTime = new Date(order.time.seconds * 1000);
                 this.dishesNotInMaking.push(this.dishesForOrder[order.id].dishes[dishName]);
               });
             });
-
-            this.dishesNotInMaking = this.dishesNotInMaking.sort((x, y) => y.totalSeconds - x.totalSeconds);
+            this.orderDishesNotInMaking()
           });
         });
       });
@@ -304,6 +309,24 @@ export class KitchenComponent implements OnInit {
     if (dishIndex > -1) {
       this.dishesWaitingForMaking.splice(dishIndex, 1);
       this.dishesInMaking.push(dish);
+    }
+  }
+
+  alertStartMaking(dish) {
+    const index = this.dishesNotInMaking.findIndex(x => x.uuid === dish.uuid);
+    this.dishesNotInMaking[index].alerted = true;
+    this.orderDishesNotInMaking();
+  }
+
+  orderDishesNotInMaking() {
+    const alerted = this.dishesNotInMaking.filter(x => x.alerted);
+    const notAlerted = this.dishesNotInMaking.filter(x => !x.alerted).sort((x, y) => y.totalSeconds - x.totalSeconds);
+    this.dishesNotInMaking = [];
+    if (alerted) {
+      alerted.forEach(x => this.dishesNotInMaking.push(x));
+    }
+    if (notAlerted) {
+      notAlerted.forEach(x => this.dishesNotInMaking.push(x));
     }
   }
 }

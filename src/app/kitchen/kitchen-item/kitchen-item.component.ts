@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { FirebaseServiceService } from '../../services/firebaseService/firebase-service.service';
 import { KitchenService } from '../../services/kitchen.service';
 import { dishStatus } from '../kitchen.component';
@@ -8,20 +8,48 @@ import { dishStatus } from '../kitchen.component';
   templateUrl: './kitchen-item.component.html',
   styleUrls: ['./kitchen-item.component.css']
 })
-export class KitchenItemComponent implements OnInit {
+export class KitchenItemComponent implements OnInit, OnDestroy {
+
 
   @Input() dish;
   @Input() restID;
   @Output() onStartedMaking = new EventEmitter();
+  @Output() onAlertStartMaking = new EventEmitter();
 
+  timer;
   restRoot;
+  passedTime: number;
+  passedMinutes: number;
+  passedSeconds: number;
+  passedColor = 'red';
+  remainingTime: number;
+
+  maxMinutesBeforeStartingMaking: number;
+  maxSecondsBeforeStartingMaking: number;
+
+  secondsBeforeAlerting = 120;
+
+  toTime = (seconds) => `${seconds < 10 ? '0' : ''}${seconds}`;
 
   constructor(private fb: FirebaseServiceService, private kitchenService: KitchenService) { }
 
   ngOnInit() {
     this.restRoot = this.fb.getRestRoot();
-  }
+    this.maxMinutesBeforeStartingMaking = Math.floor(this.dish.maxSecondsBeforeStartingMaking / 60);
+    this.maxSecondsBeforeStartingMaking = this.dish.maxSecondsBeforeStartingMaking - (this.maxMinutesBeforeStartingMaking * 60);
+    this.timer = setInterval(() => {
+      this.passedTime = Math.floor((Date.now() - this.dish.orderTime) / 1000);
+      this.passedMinutes = Math.floor(this.passedTime / 60);
+      this.passedSeconds = this.passedTime - (this.passedMinutes * 60);
+      this.passedColor = this.dish.alerted ? 'red' : 'black';
+      this.remainingTime = this.dish.maxSecondsBeforeStartingMaking - this.passedTime;
 
+      if (this.remainingTime <= this.secondsBeforeAlerting) {
+        this.onAlertStartMaking.emit(this.dish);
+      }
+
+    }, 1000);
+  }
 
   updateInP(temp: any) {
     const startedMaking = this.onStartedMaking;
@@ -58,5 +86,7 @@ export class KitchenItemComponent implements OnInit {
       });
   }
 
-
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
+  }
 }

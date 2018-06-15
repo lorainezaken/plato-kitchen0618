@@ -1,8 +1,9 @@
 <div>
   <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}"></div>
-
   <div class="dishDetails">
-    {{dish.name}}<span *ngIf="dish.isLongest">(Start Making This First)</span>
+    {{dish.name}}
+    <span *ngIf="dish.isLongest">(Start Making This First)</span>
+    <div>Max Time Before Starting Making: <span [ngStyle]="{'color': passedColor }">{{toTime(passedMinutes)}}:{{toTime(passedSeconds)}}</span>/{{toTime(maxMinutesBeforeStartingMaking)}}:{{toTime(maxSecondsBeforeStartingMaking)}}</div>
     <div>{{dish.orderId}}</div>
   </div>
   <div class="dishButtons clearAfter">
