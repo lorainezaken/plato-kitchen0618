@@ -29,13 +29,13 @@ export class HeaderComponent implements OnInit {
       this.authService.getUserInfo().then(x => {
         this.userInfo = x;
         this.selectedRest = x.rests[0];
-        this.restChanged();
+        this.restChanged(event);
       }).catch(x => this.router.navigate(['login']));
     });
 
   }
 
-  restChanged() {
+  restChanged(event) {
     this.firebaseSettings.setRest(this.selectedRest);
   }
 

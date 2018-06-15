@@ -7,7 +7,7 @@ import {environment} from '../environments/environment';
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireAuthModule} from "angularfire2/auth";
 import { RoutingModule } from './services/app.router.module';
-import { ChekerComponent } from './cheker/cheker.component';
+import { checkerComponent } from './checker/checker.component';
 import { HomeComponent } from 'app/Home/Home.component';
 import { KitchenComponent } from './kitchen/kitchen.component';
 export const firebaseConfig = environment.firebaseConfig;
@@ -24,7 +24,7 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     HeaderComponent,
-    ChekerComponent,
+    checkerComponent,
     HomeComponent,
     KitchenComponent,
     KitchenItemComponent,

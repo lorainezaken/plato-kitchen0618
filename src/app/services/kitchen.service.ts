@@ -33,15 +33,17 @@ export class KitchenService {
   // }
 
   getDishesForOrder(restId: string): Observable<{}> {
-    const orders = {};
+    let LongestOrders = {};
     let ordersCount = 0;
     let ordersInitialized = 0;
     return Observable.create(observer => {
 
       this.fb.fs.collection(`/RestAlfa/${restId}/Orders`).get().then(ordersQuerySnapshot => {
+        ordersCount = 0;
+        LongestOrders = {};
 
         ordersQuerySnapshot.forEach(orderQueryDocSnapshot => {
-          orders[orderQueryDocSnapshot.id] = {
+          LongestOrders[orderQueryDocSnapshot.id] = {
             dishes: {}
           };
           ordersCount++;
@@ -62,20 +64,20 @@ export class KitchenService {
                   const minutes = parseInt(dish.totalTime.substring(0, 2));
                   const seconds = parseInt(dish.totalTime.substring(3, 5));
                   dish.totalSeconds = (minutes * 60) + seconds;
-                  orders[orderDoc.id].dishes[dishQueryDocSnapshot.id] = dish;
+                  LongestOrders[orderDoc.id].dishes[dishQueryDocSnapshot.id] = dish;
                 });
 
-                const longestDishTime = Object.keys(orders[orderDoc.id].dishes).reduce((max, dishId) => {
-                  const value = orders[orderDoc.id].dishes[dishId];
+                const longestDishTime = Object.keys(LongestOrders[orderDoc.id].dishes).reduce((max, dishId) => {
+                  const value = LongestOrders[orderDoc.id].dishes[dishId];
                   return value.totalSeconds > max.seconds ? { seconds: value.totalSeconds, dishId } : max;
                 }, { seconds: 0, dishId: '' });
-                orders[orderDoc.id].longestDishTime = longestDishTime;
+                LongestOrders[orderDoc.id].longestDishTime = longestDishTime;
 
                 ordersInitialized++;
                 console.log('order initialized', ordersInitialized);
                 if (ordersInitialized === ordersCount) {
                   console.log('resolving');
-                  observer.next(orders);
+                  observer.next(LongestOrders);
                 }
               })
             }

@@ -23,7 +23,7 @@ export class KitchenItemComponent implements OnInit {
   }
 
 
-  updateInP() {
+  updateInP(temp: any) {
     const startedMaking = this.onStartedMaking;
     const kitchenService = this.kitchenService;
     const dish = this.dish;
@@ -38,7 +38,7 @@ export class KitchenItemComponent implements OnInit {
         console.log(err);
       });
   }
-  updateDone() {
+  updateDone(dish) {
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + this.dish.orderId + '/meals/' + this.dish.mealId + '/dishes/' + this.dish.name)
       .update({
         "status": dishStatus.done
@@ -49,7 +49,7 @@ export class KitchenItemComponent implements OnInit {
       });
   }
 
-  deleteDish() {
+  deleteDish(dish) {
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + this.dish.orderId + '/meals/' + this.dish.mealId + '/dishes/' + this.dish.name)
       .delete().then(function () {
         console.log('delete success');

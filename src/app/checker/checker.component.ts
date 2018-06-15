@@ -13,14 +13,14 @@ const enum dishStatus {
 }
 
 @Component({
-  selector: 'app-cheker',
-  templateUrl: './cheker.component.html',
-  styleUrls: ['./cheker.component.css']
+  selector: 'app-checker',
+  templateUrl: './checker.component.html',
+  styleUrls: ['./checker.component.css']
 })
 
 
 
-export class ChekerComponent implements OnInit {
+export class checkerComponent implements OnInit {
   orders: object;
   dishList: any[];
   warehouse: Object[];

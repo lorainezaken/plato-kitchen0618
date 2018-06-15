@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 })
 export class LoginPageComponent implements OnInit {
 
-  email = "lorainezaken@gmail.com";
-  password = "123456";
+  email = 'lorainezaken@gmail.com';
+  password = '123456';
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -20,7 +20,7 @@ export class LoginPageComponent implements OnInit {
   login() {
     this.authService.login(this.email, this.password)
       .then(x => {
-        alert("Logged In");
+        alert('Logged In');
         this.router.navigate(['home']);
       })
       .catch(e => {

@@ -35,7 +35,7 @@ export class KitchenItemInMakingComponent implements OnInit {
 
   private toSeconds(x: number): number { return Math.floor(x / 1000); }
 
-  updateInP() {
+  updateInP(dish) {
     debugger;
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + this.dish.orderId + '/meals/' + this.dish.mealId + '/dishes/' + this.dish.name)
       .update({
@@ -48,7 +48,7 @@ export class KitchenItemInMakingComponent implements OnInit {
 
     this.kitchenService.startMakingOrder(this.dish.orderId);
   }
-  updateDone() {
+  updateDone(dish) {
     const done = this.onDone;
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + this.dish.orderId + '/meals/' + this.dish.mealId + '/dishes/' + this.dish.name)
       .update({
@@ -61,7 +61,7 @@ export class KitchenItemInMakingComponent implements OnInit {
       });
   }
 
-  deleteDish() {
+  deleteDish(dish) {
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + this.dish.orderId + '/meals/' + this.dish.mealId + '/dishes/' + this.dish.name)
       .delete().then(function () {
         console.log('delete success');

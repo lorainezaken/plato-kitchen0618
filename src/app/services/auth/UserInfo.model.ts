@@ -1,9 +1,9 @@
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 export class UserInfo {
-    email: string = '';
-    name: string = '';
-    role: string = '';
+    email = '';
+    name = '';
+    role = '';
     rests: string[] = [];
 
     constructor(email, name, role, rests) {

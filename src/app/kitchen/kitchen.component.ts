@@ -76,7 +76,8 @@ export class KitchenComponent implements OnInit {
           this.ordersService.getAll(this.restID).subscribe(x => {
             const ordersInMaking = x.filter(order => order.startedMaking);
             const ordersNotInMaking = x.filter(order => !order.startedMaking);
-
+            this.dishesWaitingForMaking = [];
+            this.dishesInMaking = [];
             ordersInMaking.forEach(order => {
               Object.keys(this.dishesForOrder[order.id].dishes).forEach(dishName => {
                 const dish = this.dishesForOrder[order.id].dishes[dishName];
@@ -88,23 +89,28 @@ export class KitchenComponent implements OnInit {
                 dish.longestDishInOrder = this.dishesForOrder[order.id].longestDishTime.seconds;
 
                 if (dish.status === dishStatus.inProgress) {
+                  console.log(dish);
                   this.dishesInMaking.push(dish);
                 }
                 else if (dish.status === dishStatus.new) {
+                  console.log(dish);
                   this.dishesWaitingForMaking.push(dish);
                 }
               })
             })
-
+            this.dishesNotInMaking = [];
             ordersNotInMaking.forEach(order => {
               Object.keys(this.dishesForOrder[order.id].dishes).forEach(dishName => {
                 const dish = this.dishesForOrder[order.id].dishes[dishName];
+                console.log(dish);
                 if (!this.isAdmin && dish.category.toLowerCase() !== this.userInfo.role) {
+                  console.log(dish);
                   return;
                 }
                 dish.startedMaking = order.startedMaking;
                 dish.orderId = order.id;
                 this.dishesNotInMaking.push(this.dishesForOrder[order.id].dishes[dishName]);
+                console.log(this.dishesNotInMaking)
               });
             });
 
@@ -113,7 +119,9 @@ export class KitchenComponent implements OnInit {
       });
     });
   }
-
+/*.onSnapshot(function(snapshot) {
+        snapshot.docChanges().forEach(function(change) {
+            if (change.type === "added") {*/
   newIncomingOrder() {
     const ref = this.fb.fs.collection(this.restRoot + '/' + this.restID + '/Orders');
     ref.onSnapshot(docs => {

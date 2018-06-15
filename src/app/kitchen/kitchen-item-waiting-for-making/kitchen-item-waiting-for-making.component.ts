@@ -21,7 +21,7 @@ export class KitchenItemWaitingForMakingComponent implements OnInit, OnDestroy {
   @Output() onStartedMaking = new EventEmitter();
 
   restRoot;
-
+  
   secondsRemainingBeforeStartingMaking: number;
   timer;
 
@@ -36,13 +36,13 @@ export class KitchenItemWaitingForMakingComponent implements OnInit, OnDestroy {
       this.secondsRemainingBeforeStartingMaking = this.dish.longestDishInOrder - this.dish.totalSeconds - passed;
       if (this.secondsRemainingBeforeStartingMaking === 0) {
         this.snackBar.open(`Start Making ${this.dish.name}`, 'Start', { duration: 5000 }).onAction().subscribe(x => {
-          this.updateInProgress();
+          this.updateInProgress(this.dish);
         });
       }
     }, 1000);
   }
 
-  updateInProgress() {
+  updateInProgress(temp: any) {
     const startedMaking = this.onStartedMaking;
     const kitchenService = this.kitchenService;
     const dish = this.dish;
