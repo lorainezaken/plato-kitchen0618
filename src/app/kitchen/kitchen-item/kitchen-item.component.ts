@@ -31,7 +31,7 @@ export class KitchenItemComponent implements OnInit {
       .update({
         "status": dishStatus.inProgress
       }).then(function () {
-        kitchenService.startMakingOrder(dish.orderId)
+        kitchenService.startMakingOrder(dish.orderId, this.restID)
           .then(x => startedMaking.emit());
         console.log('updateInP success');
       }).catch(function (err) {

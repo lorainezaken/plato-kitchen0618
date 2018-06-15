@@ -36,7 +36,6 @@ export class KitchenItemInMakingComponent implements OnInit {
   private toSeconds(x: number): number { return Math.floor(x / 1000); }
 
   updateInP(dish) {
-    debugger;
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + this.dish.orderId + '/meals/' + this.dish.mealId + '/dishes/' + this.dish.name)
       .update({
         "status": dishStatus.inProgress
@@ -46,7 +45,7 @@ export class KitchenItemInMakingComponent implements OnInit {
         console.log(err);
       });
 
-    this.kitchenService.startMakingOrder(this.dish.orderId);
+    this.kitchenService.startMakingOrder(this.dish.orderId, this.restID);
   }
   updateDone(dish) {
     const done = this.onDone;

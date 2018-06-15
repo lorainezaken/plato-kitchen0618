@@ -109,19 +109,20 @@ export class KitchenComponent implements OnInit {
                 }
                 dish.startedMaking = order.startedMaking;
                 dish.orderId = order.id;
+                dish.isLongest = this.dishesForOrder[order.id].longestDishTime.dishId === dishName;
                 this.dishesNotInMaking.push(this.dishesForOrder[order.id].dishes[dishName]);
-                console.log(this.dishesNotInMaking)
               });
             });
 
+            this.dishesNotInMaking = this.dishesNotInMaking.sort((x, y) => y.totalSeconds - x.totalSeconds);
           });
         });
       });
     });
   }
-/*.onSnapshot(function(snapshot) {
-        snapshot.docChanges().forEach(function(change) {
-            if (change.type === "added") {*/
+  /*.onSnapshot(function(snapshot) {
+          snapshot.docChanges().forEach(function(change) {
+              if (change.type === "added") {*/
   newIncomingOrder() {
     const ref = this.fb.fs.collection(this.restRoot + '/' + this.restID + '/Orders');
     ref.onSnapshot(docs => {
@@ -260,7 +261,7 @@ export class KitchenComponent implements OnInit {
         console.log(err);
       });
 
-    this.kitchenService.startMakingOrder(dish.orderID);
+    this.kitchenService.startMakingOrder(dish.orderID, this.restID);
   }
   updateDone(dish) {
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + dish.orderID + '/meals/' + dish.mealsID + '/dishes/' + dish.name)

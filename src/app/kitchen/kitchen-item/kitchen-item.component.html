@@ -2,7 +2,7 @@
   <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}"></div>
 
   <div class="dishDetails">
-    {{dish.name}}
+    {{dish.name}}<span *ngIf="dish.isLongest">(Start Making This First)</span>
     <div>{{dish.orderId}}</div>
   </div>
   <div class="dishButtons clearAfter">

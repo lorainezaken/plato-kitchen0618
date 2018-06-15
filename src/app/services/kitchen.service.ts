@@ -49,7 +49,7 @@ export class KitchenService {
           ordersCount++;
         });
         console.log('orders count', ordersCount);
-        if(ordersCount === 0) {
+        if (ordersCount === 0) {
           observer.next({});
           return;
         }
@@ -89,11 +89,10 @@ export class KitchenService {
     });
   }
 
-  startMakingOrder(orderId: string) {
+  startMakingOrder(orderId: string, restId: string) {
     return new Promise((resolve, reject) => {
-      const doc = this.afs.doc(`/${this.fb.getRestRoot()}/kibutz-222/Orders/${orderId}`);
+      const doc = this.afs.doc(`/${this.fb.getRestRoot()}/${restId}/Orders/${orderId}`);
       doc.valueChanges().subscribe((x: { startedMaking?: Date }) => {
-        debugger;
         if (!x.startedMaking) {
           doc.update({
             startedMaking: Date.now()
