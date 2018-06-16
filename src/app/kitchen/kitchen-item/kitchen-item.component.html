@@ -1,14 +1,22 @@
-<div>
-  <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}"></div>
-  <div class="dishDetails">
-    {{dish.name}}
-    <span *ngIf="dish.isLongest">(Start Making This First)</span>
-    <div>Max Time Before Starting Making: <span [ngStyle]="{'color': passedColor }">{{toTime(passedMinutes)}}:{{toTime(passedSeconds)}}</span>/{{toTime(maxMinutesBeforeStartingMaking)}}:{{toTime(maxSecondsBeforeStartingMaking)}}</div>
-    <div>{{dish.orderId}}</div>
+<div class="dishCont">
+  <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}">
   </div>
-  <div class="dishButtons clearAfter">
-    <div class="redBox" title="delete" (click)="deleteDish(dish)"></div>
-    <div class="orangeBox" title="change status" (click)="updateInP(dish)"></div>
-    <div class="greenBox" (click)="updateDone(dish)"></div>
+  <div class="dishName">
+    <h2>{{dish.name}}</h2>
+    <div>Max Time Before Starting Making:
+      <span [ngStyle]="{'color': passedColor }">{{toTime(passedMinutes)}}:{{toTime(passedSeconds)}}</span>/{{toTime(maxMinutesBeforeStartingMaking)}}:{{toTime(maxSecondsBeforeStartingMaking)}}
+    </div>
+    <h3>Cook: cook name</h3>
+  </div>
+  <div class="dishTime dishTimeRed">
+    1:00
+  </div>
+  <div class="dishInstruction">
+    {{dish.orderId}}
+  </div>
+  <div class="dishButtons">
+    <div class="dishButton redBox" title="delete" (click)="deleteDish(dish)"></div>
+    <div class="dishButton orangeBox" title="change status" (click)="updateInP(dish)"></div>
+    <div class="dishButton greenBox" (click)="updateDone(dish)"></div>
   </div>
 </div>

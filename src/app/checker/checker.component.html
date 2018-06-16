@@ -12,6 +12,30 @@
 </section> -->
 <div *ngFor="let orderId of objectKeys(orders)">
   <div *ngFor="let mealId of objectKeys(orders[orderId].meals)">
+    <div class="dishCont">
+      <div class="photo" [ngStyle]="{'background-image': 'url(' + orders[orderId].meals[mealId].pic + ')'}">
+      </div>
+      <div class="dishName">
+        <h2>{{dish.name}}</h2>
+        <h3>Cook: cook name</h3>
+      </div>
+      <div class="dishTime dishTimeRed">
+        1:00
+      </div>
+      <div class="dishInstruction">
+        {{dish.orderId}}
+      </div>
+      <div class="dishButtons">
+        <div class="dishButton redBox" title="delete" (click)="deleteDish(dish)"></div>
+        <div class="dishButton orangeBox" title="change status" (click)="updateInP(dish)"></div>
+        <div class="dishButton greenBox" (click)="updateDone(dish)"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngFor="let orderId of objectKeys(orders)">
+  <div *ngFor="let mealId of objectKeys(orders[orderId].meals)">
     <button class="greenBox" (click)="mealIsReady(orderId, mealId)"></button>
     <div (click)="showExtendedOrderDetails(orderId)">
       <img height="42" width="42" src={{orders[orderId].meals[mealId].pic}} />

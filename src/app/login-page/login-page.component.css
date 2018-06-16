@@ -1,0 +1,52 @@
+.login {
+  text-align: left;
+  padding: 40px 0;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.login label {
+  display: block;
+  font-size: 0.9em;
+  color: #999;
+  margin: 1em 0;
+}
+
+.login input {
+  padding: 7px 12px;
+  border: 0 solid #ddd;
+  border-bottom-width: 1px;
+  width: 100%;
+  font-size: 1em;
+  background: transparent;
+}
+
+.login input:focus {
+  outline: none;
+  border-color: #6af;
+}
+
+.login button {
+  margin-top: 1em;
+  padding: 16px;
+  font-size: 1.1em;
+  background-color: #aaa;
+  color: white;
+  border: 0;
+  border-radius: 2em;
+  min-width: 200px;
+  box-shadow: 0 4px 5px 0px #00000033;
+}
+
+.login button:focus {
+  outline: 0;
+}
+
+
+.login .button-container {
+  text-align: center;
+}
