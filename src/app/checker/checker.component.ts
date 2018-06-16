@@ -43,11 +43,16 @@ export class checkerComponent implements OnInit {
 
 
   ngOnInit() {
+    this.restRoot = this.fb.getRestRoot();
+    this.restID = this.fb.getRest();
+    if (this.restID !== '') {
+      this.newIncomingOrder();
+    }
+
     this.fb.getRestObservable().subscribe(x => {
-      this.restRoot = this.fb.getRestRoot();
       this.restID = x;
       this.newIncomingOrder();
-    })
+    });
   }
 
   newIncomingOrder() {
@@ -85,6 +90,7 @@ export class checkerComponent implements OnInit {
           const mealVals = x.doc.data();
           this.orders[`${order.orderID}`].meals[x.doc.id] = {
             mealId: x.doc.id,
+            name: mealVals.mealId,
             pic: mealVals.pic,
             status: mealVals.status,
             dishes: {},
@@ -160,7 +166,7 @@ export class checkerComponent implements OnInit {
   }
 
   showExtendedOrderDetails(orderId: string) {
-   // debugger;
+    // debugger;
     this.orders[orderId].showExtendedDetails = !this.orders[orderId].showExtendedDetails;
   }
 

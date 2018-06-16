@@ -89,6 +89,7 @@ export class KitchenComponent implements OnInit {
                 dish.uuid = uuidv4();
                 dish.startedMaking = order.startedMaking;
                 dish.orderId = order.id;
+                dish.tableId = order.tableId;
                 dish.longestDishInOrder = this.dishesForOrder[order.id].longestDishTime.seconds;
 
                 if (dish.status === dishStatus.inProgress) {
@@ -114,6 +115,7 @@ export class KitchenComponent implements OnInit {
                 dish.uuid = uuidv4();
                 dish.startedMaking = order.startedMaking;
                 dish.orderId = order.id;
+                dish.tableId = order.tableId;
                 dish.isLongest = this.dishesForOrder[order.id].longestDishTime.dishId === dishName;
                 dish.orderTime = new Date(order.time.seconds * 1000);
                 this.dishesNotInMaking.push(this.dishesForOrder[order.id].dishes[dishName]);
@@ -256,18 +258,18 @@ export class KitchenComponent implements OnInit {
         })
       });
   }
-  updateInP(dish) {
-    this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + dish.orderID + '/meals/' + dish.mealsID + '/dishes/' + dish.name)
-      .update({
-        "status": dishStatus.inProgress
-      }).then(function () {
-        console.log('updateInP success');
-      }).catch(function (err) {
-        console.log(err);
-      });
+  // updateInP(dish) {
+  //   this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + dish.orderID + '/meals/' + dish.mealsID + '/dishes/' + dish.name)
+  //     .update({
+  //       "status": dishStatus.inProgress
+  //     }).then(function () {
+  //       console.log('updateInP success');
+  //     }).catch(function (err) {
+  //       console.log(err);
+  //     });
 
-    this.kitchenService.startMakingOrder(dish.orderID, this.restID);
-  }
+  //   this.kitchenService.startMakingOrder(dish.orderID, this.restID);
+  // }
   updateDone(dish) {
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + dish.orderID + '/meals/' + dish.mealsID + '/dishes/' + dish.name)
       .update({

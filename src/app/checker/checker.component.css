@@ -1,23 +1,29 @@
-.meal {
-  background: #fafafa;
-  border-bottom: 2px solid #e5e4e4;
-  min-height: 130px;
-}
-
-.photo {
-  /* background:url("https://firebasestorage.googleapis.com/v0/b/plato-7fb01.appspot.com/o/Kibuz-222%2FmealsPics%2FkornBifBurger.png?alt=media&token=1ead5eaa-e7b1-47f3-9ae0-0e56308c92fb"); */
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 100px;
+.dishButton {
   width: 100px;
-  border: 1px solid black;
-  margin: 10px;
-  float: left;
-  cursor: pointer;
+  height: 100px;
 }
 
-.photo {
-  /* background:url("https://firebasestorage.googleapis.com/v0/b/plato-7fb01.appspot.com/o/Kibuz-222%2FmealsPics%2FkornBifBurger.png?alt=media&token=1ead5eaa-e7b1-47f3-9ae0-0e56308c92fb"); */
+.green-box {
+  background: url(/assets/images/bellbutton.png) no-repeat;
+}
+
+.return-box {
+  background: url(/assets/images/return.png) no-repeat;
+}
+
+.order-container {
+  text-align: left;
+} 
+
+.meal-out-of {
+  grid-area: outof;
+}
+
+.meal-photo-container {
+  grid-area: photo;
+}
+
+.meal-photo {
   background-repeat: no-repeat;
   background-size: cover;
   height: 100px;
@@ -25,101 +31,88 @@
   border: 1px solid black;
 }
 
-.dishCont {
-  width: 100%;
-  height: 150px;
-  background: #fafafa;
-  border-bottom: 2px solid #e5e4e4;
-  display: grid;
-  grid-template-columns: 100px repeat(4, auto);
-  grid-gap: 10px;
-  align-items: center;
+.ready-container {
+  grid-area: ready;
 }
 
-.dishName {
-  text-align: left;
+.return-container {
+  grid-area: return;
 }
 
-.dishName h3 {
-  color: #336ba9;
+.dishes-container {
+  grid-area: dishes;
 }
 
-.dishTime {
-  font-weight: bold;
+.dish-list-container {
+  grid-area: dishlist;
+  background-color: darkgray;
 }
 
-.dishTimeRed {
-  color: red;
-}
-
-.dishButton {
+.dish-status {
   width: 100px;
   height: 100px;
-  display: inline-block;
 }
 
-.dishButtons {}
-
-.greenBox {
-  background: url(/assets/images/bellbutton.png) no-repeat;
+.dish-status-waiting {
+  background: url(/assets/images/notcooking.png) no-repeat;
+  display: inline-block; 
+  width: 100px;
+  height: 100px;
+}
+.dish-status-in-making {
+  background: url(/assets/images/cooking.png) no-repeat;
+  display: inline-block; 
+  width: 100px;
+  height: 100px;
+}
+.dish-status-completed {
+  background: url(/assets/images/bell.png) no-repeat;
+  display: inline-block; 
+  width: 100px;
+  height: 100px;
 }
 
-.orangeBox {
-  background: url(/assets/images/cookingbutton.png) no-repeat;
+.meal-container {
+  display: grid;
+  grid-template-areas:
+    'photo dishes outof ready return'
+    'dishlist dishlist dishlist dishlist dishlist';
+  padding: 10px;
+  margin-left: 30px;
 }
 
-.redBox {
-  background: url(/assets/images/trashbutton.png) no-repeat;
+.meal-container > div {
+  background-color: lightgray;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
 }
 
-.accor {
-  height: 150px;
-  display: block;
-  width: 100%;
+.dish-details-container {
+  display: grid;
+  grid-template-areas: 'name status ok return'
 }
 
-.dishList {
-  float: left;
-  margin: 30px auto 0;
-  width: 50px;
-  line-height: 40px;
-  cursor: pointer;
+.dish-status-container {
+  grid-area: status;
 }
 
-.dishItem {
-  width: 120px;
+.dish-name {
+  grid-area: name;
 }
 
-.accor p {
-  text-align: left;
-  margin: 10px 0 0 20px;
+.dish-ok {
+  grid-area: ok;
+  background: url(/assets/images/okbutton.png) no-repeat;
+  display: inline-block; 
+  width: 100px;
+  height: 100px;
 }
 
-.greyBox {
-  height: 250px;
-  width: 100%;
-  background: #4a4a4a;
-  position: relative;
-  top: 150px;
-}
-
-.boxes {
-  float: right;
-}
-
-.itemName {
-  float: left;
-  position: relative;
-  top: 65px;
-  left: 30px;
-}
-
-.getDish {
-  float: left;
-  width: 700px;
-  cursor: pointer;
-}
-
-.description {
-  margin: 10px 0 20px;
+.dish-return {
+  grid-area: return;
+  background: url(/assets/images/return.png) no-repeat;
+  display: inline-block; 
+  width: 100px;
+  height: 100px;
 }

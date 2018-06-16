@@ -6,7 +6,7 @@
     <div>Max Time Before Starting Making:
       <span [ngStyle]="{'color': passedColor }">{{toTime(passedMinutes)}}:{{toTime(passedSeconds)}}</span>/{{toTime(maxMinutesBeforeStartingMaking)}}:{{toTime(maxSecondsBeforeStartingMaking)}}
     </div>
-    <h3>Cook: cook name</h3>
+    <h3>Table: {{dish.tableId}}</h3>
   </div>
   <div class="dishTime dishTimeRed">
     1:00

@@ -1,53 +1,37 @@
-<!-- <section>
-  <div class="dishCont" *ngFor="let dish of dishList">
-    <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}"></div>
-    <div class="dishDetails">{{dish?.name}} | {{dish.totalTime}} | {{dish.description}} | status: {{dish.status}} | tableId: {{dish.table}} | time:
-      {{dish.time}}</div>
-    <div class="dishButtons clearAfter">
-      <div class="redBox" title="delete" (click)="deleteDish(dish)"></div>
-      <div class="orangeBox" title="change status" (click)="updateInP(dish)"></div>
-      <div class="greenBox" (click)="updateDone(dish)"></div>
+<div class="order-container" *ngFor="let orderId of objectKeys(orders)">
+  {{orderId}}
+  <div class="meal-container" *ngFor="let mealId of objectKeys(orders[orderId].meals)" (click)="showExtendedOrderDetails(orderId)">
+    <div class="meal-photo-container">
+      <img class="meal-photo" src={{orders[orderId].meals[mealId].pic}} />
     </div>
-  </div>
-</section> -->
-<div *ngFor="let orderId of objectKeys(orders)">
-  <div *ngFor="let mealId of objectKeys(orders[orderId].meals)">
-    <div class="dishCont">
-      <div class="photo" [ngStyle]="{'background-image': 'url(' + orders[orderId].meals[mealId].pic + ')'}">
-      </div>
-      <div class="dishName">
-        <h2>{{dish.name}}</h2>
-        <h3>Cook: cook name</h3>
-      </div>
-      <div class="dishTime dishTimeRed">
-        1:00
-      </div>
-      <div class="dishInstruction">
-        {{dish.orderId}}
-      </div>
-      <div class="dishButtons">
-        <div class="dishButton redBox" title="delete" (click)="deleteDish(dish)"></div>
-        <div class="dishButton orangeBox" title="change status" (click)="updateInP(dish)"></div>
-        <div class="dishButton greenBox" (click)="updateDone(dish)"></div>
-      </div>
+    <div class="dishes-container">
+      {{orders[orderId].meals[mealId].name}}
     </div>
-  </div>
-</div>
-
-<div *ngFor="let orderId of objectKeys(orders)">
-  <div *ngFor="let mealId of objectKeys(orders[orderId].meals)">
-    <button class="greenBox" (click)="mealIsReady(orderId, mealId)"></button>
-    <div (click)="showExtendedOrderDetails(orderId)">
-      <img height="42" width="42" src={{orders[orderId].meals[mealId].pic}} />
-      <span>{{orders[orderId].meals[mealId].readyDishes}} Out Of {{objectKeys(orders[orderId].meals[mealId].dishes).length}}</span>
-      <div *ngFor="let dishId of objectKeys(orders[orderId].meals[mealId].dishes)">
-        <span>{{dishId}}</span>
-      </div>
-      <div class="accor" *ngIf="orders[orderId].showExtendedDetails">
-        <div *ngFor="let dishId of objectKeys(orders[orderId].meals[mealId].dishes)">
-          <span>{{dishId}}</span>
-          Status: {{orders[orderId].meals[mealId].dishes[dishId].status}}
-        </div>
+    <div class="meal-out-of">
+      <span>{{orders[orderId].meals[mealId].readyDishes}}/{{objectKeys(orders[orderId].meals[mealId].dishes).length}}</span>
+    </div>
+    <div class="ready-container">
+      <div class="green-box dishButton" (click)="mealIsReady(orderId, mealId)"></div>
+    </div>
+    <div class="return-container">
+      <div class="return-box dishButton"></div>
+    </div>
+    <div class="dish-list-container" *ngIf="orders[orderId].showExtendedDetails">
+      <div class="dish-details-container" *ngFor="let dishId of objectKeys(orders[orderId].meals[mealId].dishes)">
+        <div class="dish-name">{{dishId}}</div>
+        <table class="dish-status-container">
+          <td class="dish-status">
+            <div class="dish-status-waiting" *ngIf="orders[orderId].meals[mealId].dishes[dishId].status === 0"></div>
+          </td>
+          <td class="dish-status">
+            <span class="dish-status-in-making" *ngIf="orders[orderId].meals[mealId].dishes[dishId].status === 1"></span>
+          </td>
+          <td class="dish-status">
+            <span class="dish-status-completed" *ngIf="orders[orderId].meals[mealId].dishes[dishId].status === 2"></span>
+          </td>
+        </table>
+        <div class="dish-ok"></div>
+        <div class="dish-return"></div>        
       </div>
     </div>
   </div>

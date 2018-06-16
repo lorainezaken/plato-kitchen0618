@@ -89,15 +89,17 @@ export class KitchenService {
     });
   }
 
-  startMakingOrder(orderId: string, restId: string) {
-    return new Promise((resolve, reject) => {
+  startMakingOrder(orderId: string, restId: string, mealId: string, dishId: string, cookName: string) {
+    return new Promise<any>((resolve, reject) => {
       const doc = this.afs.doc(`/${this.fb.getRestRoot()}/${restId}/Orders/${orderId}`);
       doc.valueChanges().subscribe((x: { startedMaking?: Date }) => {
         if (!x.startedMaking) {
           doc.update({
             startedMaking: Date.now()
           }).then(x => {
-            resolve();
+            this.afs.doc(`/RestAlfa/${restId}/Orders/${orderId}/meals/${mealId}/dishes/${dishId}`).update({ cookName })
+              .then(resolve)
+              .catch(reject);
             console.log(x);
           }).catch(x => {
             reject(x);

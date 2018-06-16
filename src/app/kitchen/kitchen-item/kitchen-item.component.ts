@@ -2,6 +2,8 @@ import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angu
 import { FirebaseServiceService } from '../../services/firebaseService/firebase-service.service';
 import { KitchenService } from '../../services/kitchen.service';
 import { dishStatus } from '../kitchen.component';
+import { AuthService } from 'app/services/auth/auth.service';
+import { UserInfo } from 'app/services/auth/UserInfo.model';
 
 @Component({
   selector: 'kitchen-item',
@@ -23,6 +25,7 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
   passedSeconds: number;
   passedColor = 'red';
   remainingTime: number;
+  userInfo: UserInfo = null;
 
   maxMinutesBeforeStartingMaking: number;
   maxSecondsBeforeStartingMaking: number;
@@ -31,9 +34,11 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
 
   toTime = (seconds) => `${seconds < 10 ? '0' : ''}${seconds}`;
 
-  constructor(private fb: FirebaseServiceService, private kitchenService: KitchenService) { }
+  constructor(private fb: FirebaseServiceService, private kitchenService: KitchenService,
+    private authService: AuthService) { }
 
   ngOnInit() {
+    this.authService.getUserInfo().then(x => this.userInfo = x);
     this.restRoot = this.fb.getRestRoot();
     this.maxMinutesBeforeStartingMaking = Math.floor(this.dish.maxSecondsBeforeStartingMaking / 60);
     this.maxSecondsBeforeStartingMaking = this.dish.maxSecondsBeforeStartingMaking - (this.maxMinutesBeforeStartingMaking * 60);
@@ -55,11 +60,14 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
     const startedMaking = this.onStartedMaking;
     const kitchenService = this.kitchenService;
     const dish = this.dish;
+    const restId = this.restID;
+    const userInfo = this.userInfo;
+
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + this.dish.orderId + '/meals/' + this.dish.mealId + '/dishes/' + this.dish.name)
       .update({
         "status": dishStatus.inProgress
       }).then(function () {
-        kitchenService.startMakingOrder(dish.orderId, this.restID)
+        kitchenService.startMakingOrder(dish.orderId, restId, dish.mealId, dish.name, userInfo.name)
           .then(x => startedMaking.emit());
         console.log('updateInP success');
       }).catch(function (err) {
