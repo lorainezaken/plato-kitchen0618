@@ -5,10 +5,13 @@
 
 .green-box {
   background: url(/assets/images/bellbutton.png) no-repeat;
+  float: right;
 }
 
 .return-box {
-  background: url(/assets/images/return.png) no-repeat;
+  background: url(/assets/images/returns.png) no-repeat;
+  position: relative;
+  left:70px;
 }
 
 .order-container {
@@ -21,6 +24,7 @@
 
 .meal-photo-container {
   grid-area: photo;
+  /* width: 130px; */
 }
 
 .meal-photo {
@@ -29,10 +33,13 @@
   height: 100px;
   width: 100px;
   border: 1px solid black;
+  position: relative;
+  right: 120px;
 }
 
 .ready-container {
   grid-area: ready;
+  /* width: 130px; */
 }
 
 .return-container {
@@ -41,11 +48,12 @@
 
 .dishes-container {
   grid-area: dishes;
+  width: 220px;
 }
 
 .dish-list-container {
   grid-area: dishlist;
-  background-color: darkgray;
+  background-color:#4a4a4a!important;
 }
 
 .dish-status {
@@ -79,13 +87,14 @@
     'dishlist dishlist dishlist dishlist dishlist';
   padding: 10px;
   margin-left: 30px;
+  border-bottom: 2px solid #e5e4e4;
 }
 
 .meal-container > div {
-  background-color: lightgray;
+  background: #fafafa;
   text-align: center;
   padding: 20px 0;
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .dish-details-container {
@@ -99,20 +108,30 @@
 
 .dish-name {
   grid-area: name;
+  width: 120px;
+  color: #fafafa;
 }
 
 .dish-ok {
   grid-area: ok;
   background: url(/assets/images/okbutton.png) no-repeat;
   display: inline-block; 
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
+  position: relative;
+  left: 205px;
 }
 
 .dish-return {
   grid-area: return;
   background: url(/assets/images/return.png) no-repeat;
   display: inline-block; 
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
+  position: relative;
+  left: 90px;
+}
+table {
+  border-left: 2px solid #fafafa;
+  border-right: 2px solid #fafafa;
 }

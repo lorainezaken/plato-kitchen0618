@@ -1,11 +1,11 @@
 <div class="order-container" *ngFor="let orderId of objectKeys(orders)">
-  {{orderId}}
+  order ID: {{orderId}}, Table Number: {{orders[orderId].orderTable}}
   <div class="meal-container" *ngFor="let mealId of objectKeys(orders[orderId].meals)" (click)="showExtendedOrderDetails(orderId)">
     <div class="meal-photo-container">
       <img class="meal-photo" src={{orders[orderId].meals[mealId].pic}} />
     </div>
     <div class="dishes-container">
-      {{orders[orderId].meals[mealId].name}}
+      <h3>{{orders[orderId].meals[mealId].name}}</h3>
     </div>
     <div class="meal-out-of">
       <span>{{orders[orderId].meals[mealId].readyDishes}}/{{objectKeys(orders[orderId].meals[mealId].dishes).length}}</span>

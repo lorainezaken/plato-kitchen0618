@@ -3,6 +3,7 @@ import { FirebaseServiceService } from '../../services/firebaseService/firebase-
 import { KitchenService } from '../../services/kitchen.service';
 import { dishStatus } from '../kitchen.component';
 
+
 @Component({
   selector: 'kitchen-item-in-making',
   templateUrl: './kitchen-item-in-making.component.html',
@@ -23,14 +24,15 @@ export class KitchenItemInMakingComponent implements OnInit {
   constructor(private fb: FirebaseServiceService, private kitchenService: KitchenService) { }
 
   ngOnInit() {
-    this.restRoot = this.fb.getRestRoot();
-    console.log(this.dish);
-    const makingDate = this.dish.startedMaking;
-    setInterval(() => {
-      const now = Date.now();
-      this.passedSecondsTotal = this.toSeconds(now - makingDate);
-      this.remainingSecondsTotal = this.dish.totalSeconds - this.passedSecondsTotal;
-    }, 1000);
+      this.restRoot = this.fb.getRestRoot();
+      console.log(this.dish);
+      const makingDate = this.dish.startedMaking;
+      setInterval(() => {
+        const now = Date.now();
+        this.passedSecondsTotal = this.toSeconds(now - makingDate);
+        this.remainingSecondsTotal = this.dish.totalSeconds - this.passedSecondsTotal;
+      }, 1000);
+
   }
 
   private toSeconds(x: number): number { return Math.floor(x / 1000); }

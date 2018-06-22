@@ -1,5 +1,4 @@
-.photo {
-	/* background:url("https://firebasestorage.googleapis.com/v0/b/plato-7fb01.appspot.com/o/Kibuz-222%2FmealsPics%2FkornBifBurger.png?alt=media&token=1ead5eaa-e7b1-47f3-9ae0-0e56308c92fb"); */
+/* .photo {
 	background-repeat: no-repeat; 
 	background-size:100% 100%; 
 	height: 100px;
@@ -43,4 +42,69 @@
 	content: "";
 	display: table;
 	clear: both;
-}
+} */
+.photo {
+	/* background:url("https://firebasestorage.googleapis.com/v0/b/plato-7fb01.appspot.com/o/Kibuz-222%2FmealsPics%2FkornBifBurger.png?alt=media&token=1ead5eaa-e7b1-47f3-9ae0-0e56308c92fb"); */
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 100px;
+	width: 100px;
+	border: 1px solid black;
+  }
+  
+  .dishCont {
+	width: 100%;
+	height: 150px;
+	background: #fafafa;
+	border-bottom: 2px solid #e5e4e4;
+  
+	display: grid;
+	grid-template-columns: 100px repeat(4, auto);
+	grid-gap: 10px;
+	align-items: center;
+  }
+  
+  .dishName {
+	text-align: left;
+  }
+  
+  .dishName h3 {
+	color: #336ba9;
+  }
+  
+  .dishTime {
+	font-weight: bold;
+  }
+  
+  .dishTimeRed {
+	color: red;
+  }
+  
+  .dishButton {
+	width: 100px;
+	height: 100px;
+	display: inline-block;
+  }
+  
+  .dishButtons {
+	float:right;
+  }
+  
+  .greenBox {
+	background: url(/assets/images/bellbutton.png) no-repeat;
+  }
+  
+  .orangeBox {
+	background: url(/assets/images/cookingbutton.png) no-repeat;
+  }
+  
+  .redBox {
+	background: url(/assets/images/trashbutton.png) no-repeat;
+  }
+  
+  /* .clearAfter:after {
+	content: "";
+	display: table;
+	clear: both;
+  } */
+  

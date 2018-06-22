@@ -4,6 +4,7 @@ export class Order {
     startedMaking: Date;
     orders : any[];
     meals: Meal[];
+  tableId: any;
     constructor(_name, _orders,_meals){ // Make sure you set default value so you dont have to create new class like i did: new Dish('',[]);
         this.name = _name;
         this.orders = _orders;

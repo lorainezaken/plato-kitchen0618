@@ -7,7 +7,7 @@ import { Order } from '../order/order';
 import { UserInfo } from 'app/services/auth/UserInfo.model';
 import { AuthService } from 'app/services/auth/auth.service';
 import { Router } from '@angular/router';
-const uuidv4 = require('uuid/v4');
+// const uuidv4 = require('uuid/v4');
 
 export const enum dishStatus {
   new,
@@ -80,13 +80,14 @@ export class KitchenComponent implements OnInit {
             const ordersNotInMaking = x.filter(order => !order.startedMaking);
             this.dishesWaitingForMaking = [];
             this.dishesInMaking = [];
+            let count = 0 ;
             ordersInMaking.forEach(order => {
               Object.keys(this.dishesForOrder[order.id].dishes).forEach(dishName => {
                 const dish = this.dishesForOrder[order.id].dishes[dishName];
                 if (!this.isAdmin && dish.category.toLowerCase() !== this.userInfo.role) {
                   return;
                 }
-                dish.uuid = uuidv4();
+                dish.uuid = ((new Date()).getTime()).toString() + count.toString();
                 dish.startedMaking = order.startedMaking;
                 dish.orderId = order.id;
                 dish.tableId = order.tableId;
@@ -101,8 +102,10 @@ export class KitchenComponent implements OnInit {
                   this.dishesWaitingForMaking.push(dish);
                 }
               })
+              count++;
             })
             this.dishesNotInMaking = [];
+            let counter = 0;
             ordersNotInMaking.forEach((order: any) => {
               Object.keys(this.dishesForOrder[order.id].dishes).forEach(dishName => {
                 const dish = this.dishesForOrder[order.id].dishes[dishName];
@@ -111,8 +114,7 @@ export class KitchenComponent implements OnInit {
                   console.log(dish);
                   return;
                 }
-                console.log(uuidv4);
-                dish.uuid = uuidv4();
+                dish.uuid = ((new Date()).getTime()).toString() + counter.toString();
                 dish.startedMaking = order.startedMaking;
                 dish.orderId = order.id;
                 dish.tableId = order.tableId;
@@ -120,6 +122,7 @@ export class KitchenComponent implements OnInit {
                 dish.orderTime = new Date(order.time.seconds * 1000);
                 this.dishesNotInMaking.push(this.dishesForOrder[order.id].dishes[dishName]);
               });
+              counter++;
             });
             this.orderDishesNotInMaking()
           });
@@ -331,4 +334,5 @@ export class KitchenComponent implements OnInit {
       notAlerted.forEach(x => this.dishesNotInMaking.push(x));
     }
   }
+  
 }
