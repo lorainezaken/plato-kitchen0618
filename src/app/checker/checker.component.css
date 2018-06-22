@@ -22,10 +22,7 @@
   grid-area: outof;
 }
 
-.meal-photo-container {
-  grid-area: photo;
-  /* width: 130px; */
-}
+
 
 .meal-photo {
   background-repeat: no-repeat;

@@ -1,0 +1,63 @@
+.dish-details-container {
+    display: grid;
+    grid-template-areas: 'name status ok return'
+  }
+
+  .dish-name {
+    grid-area: name;
+    width: 120px;
+    color: #fafafa;
+  }
+
+  .dish-ok {
+    grid-area: ok;
+    background: url(/assets/images/okbutton.png) no-repeat;
+    display: inline-block; 
+    width: 70px;
+    height: 70px;
+    position: relative;
+    left: 205px;
+  }
+  
+  .dish-return {
+    grid-area: return;
+    background: url(/assets/images/return.png) no-repeat;
+    display: inline-block; 
+    width: 70px;
+    height: 70px;
+    position: relative;
+    left: 90px;
+  }
+
+  .dish-status-container {
+    grid-area: status;
+  }
+
+  .dish-status {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .dish-status-waiting {
+    background: url(/assets/images/notcooking.png) no-repeat;
+    display: inline-block; 
+    width: 100px;
+    height: 100px;
+  }
+  .dish-status-in-making {
+    background: url(/assets/images/cooking.png) no-repeat;
+    display: inline-block; 
+    width: 100px;
+    height: 100px;
+  }
+  .dish-status-completed {
+    background: url(/assets/images/bell.png) no-repeat;
+    display: inline-block; 
+    width: 100px;
+    height: 100px;
+  }
+  
+  table {
+    border-left: 2px solid #fafafa;
+    border-right: 2px solid #fafafa;
+  }

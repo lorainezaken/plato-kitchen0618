@@ -3,7 +3,6 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { FirebaseServiceService } from "app/services/firebaseService/firebase-service.service";
 import { KitchenService } from '../services/kitchen.service';
 import { OrdersService } from '../services/orders.service';
-import { Order } from '../order/order';
 import { UserInfo } from 'app/services/auth/UserInfo.model';
 import { AuthService } from 'app/services/auth/auth.service';
 import { Router } from '@angular/router';

@@ -1,0 +1,16 @@
+<div class="dish-details-container">
+    <div class="dish-name">{{dish.name}}</div>
+    <table class="dish-status-container">
+      <td class="dish-status">
+        <div class="dish-status-waiting" *ngIf="dish.status === 0"></div>
+      </td>
+      <td class="dish-status">
+        <span class="dish-status-in-making" *ngIf="dish.status === 1"></span>
+      </td>
+      <td class="dish-status">
+        <span class="dish-status-completed" *ngIf="dish.status === 2"></span>
+      </td>
+    </table>
+    <div class="dish-ok"></div>
+    <div class="dish-return"></div>        
+  </div>

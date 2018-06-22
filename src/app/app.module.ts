@@ -19,12 +19,18 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { FormsModule } from '@angular/forms';
+import { CheckerOrderComponent } from './checker/checker-order/checker-order.component';
+import { CheckerMealComponent } from './checker/checker-meal/checker-meal.component';
+import { CheckerDishComponent } from 'app/checker/checker-dish/checker-dish.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     checkerComponent,
+    CheckerOrderComponent,
+    CheckerMealComponent,
+    CheckerDishComponent,
     HomeComponent,
     KitchenComponent,
     KitchenItemComponent,

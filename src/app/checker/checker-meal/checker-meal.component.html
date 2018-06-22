@@ -1,0 +1,22 @@
+<div class="meal-container">
+  <div class="meal-photo-container">
+    <img class="meal-photo" [src]="meal.pic" />
+  </div>
+  <div class="dishes-container">
+    <h3>{{meal.mealId}}</h3>
+  </div>
+  <div class="meal-out-of">
+    {{readyDishes}}/{{dishes.length}}
+  </div>
+  <div class="ready-container">
+    <div class="green-box dishButton" (click)="mealIsReadyEvent()"></div>
+  </div>
+  <div class="return-container">
+    <div class="return-box dishButton"></div>
+  </div>
+  <div class="dish-list-container" *ngIf="true">
+    <div *ngFor="let dish of dishes">
+      <app-checker-dish [restId]="restId" [dish]="dish"></app-checker-dish>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<div>
+  order ID: {{order.id}}, Table Number: {{order.tableId}}  
+
+  <div *ngFor="let meal of meals">
+    <app-checker-meal [restId]="restId" [meal]="meal" [orderId]="order.id" (mealIsReady)="mealIsReady($event)"></app-checker-meal>
+  </div>
+</div>
