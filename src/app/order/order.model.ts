@@ -7,6 +7,7 @@ export class Order {
     status: number;
 }
 export class Meal {
+    mealId: string;
     docId: string;
     status: number;
     tableId: string;
@@ -20,6 +21,9 @@ export class Meal {
 export class Dish {
     name: string;
     status: number;
+    order: Order;
+    meal: Meal;
+    totalTime: string;
 
     constructor(_name, _status) {
         this.name = _name;

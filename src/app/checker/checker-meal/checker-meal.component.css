@@ -68,4 +68,5 @@
 .dish-list-container {
   grid-area: dishlist;
   background-color:#4a4a4a!important;
+  margin-left: -35px;
 }

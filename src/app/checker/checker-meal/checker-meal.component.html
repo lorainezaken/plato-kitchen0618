@@ -14,7 +14,7 @@
   <div class="return-container">
     <div class="return-box dishButton"></div>
   </div>
-  <div class="dish-list-container" *ngIf="true">
+  <div class="dish-list-container" *ngIf="isExpanded">
     <div *ngFor="let dish of dishes">
       <app-checker-dish [restId]="restId" [dish]="dish"></app-checker-dish>
     </div>

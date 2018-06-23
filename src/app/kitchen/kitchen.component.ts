@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { FirebaseServiceService } from "app/services/firebaseService/firebase-service.service";
 import { KitchenService } from '../services/kitchen.service';
@@ -6,6 +6,9 @@ import { OrdersService } from '../services/orders.service';
 import { UserInfo } from 'app/services/auth/UserInfo.model';
 import { AuthService } from 'app/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { MealsService } from '../services/meals.service';
+import { DishesService } from '../services/dishes.service';
+import { Dish } from 'app/order/order.model';
 // const uuidv4 = require('uuid/v4');
 
 export const enum dishStatus {
@@ -18,7 +21,7 @@ export const enum dishStatus {
   templateUrl: './kitchen.component.html',
   styleUrls: ['./kitchen.component.css']
 })
-export class KitchenComponent implements OnInit {
+export class KitchenComponent implements OnInit, OnChanges {
   dishList: any[];
   orders: any[];
   warehouse: Object[];
@@ -35,7 +38,8 @@ export class KitchenComponent implements OnInit {
   restID;
   restRoot;
 
-  constructor(private router: Router, private fb: FirebaseServiceService, private kitchenService: KitchenService, private ordersService: OrdersService, private authService: AuthService) {
+  constructor(private router: Router, private fb: FirebaseServiceService, private kitchenService: KitchenService,
+    private ordersService: OrdersService, private authService: AuthService, private mealsService: MealsService, private dishesService: DishesService) {
     this.ordersIds = [];
     this.mealList = [];
     this.warehouse = [];
@@ -65,213 +69,47 @@ export class KitchenComponent implements OnInit {
         this.isAdmin = this.userInfo.role === 'kitchen-manager';
 
         this.restRoot = this.fb.getRestRoot();
-        this.newIncomingOrder();
-        this.warehouseStockData();
-        this.kitchenService.getDishesForOrder(this.restID).subscribe((x: { data: {} }) => {
-          console.log(x);
-          this.dishesForOrder = x;
-          this.dishesInMaking = [];
-          this.dishesWaitingForMaking = [];
-          this.dishesNotInMaking = [];
-          this.ordersService.getAll(this.restID).subscribe(x => {
+        this.ordersService.getAll(this.restID).subscribe(orders => {
+          orders.forEach(order => {
+            this.mealsService.getAll(this.restID, order.id).subscribe(meals => {
+              meals.forEach(meal => {
+                this.dishesService.getAll(this.restID, order.id, meal.docId).subscribe(dishes => {
+                  dishes.forEach(x => {
+                    x.order = order;
+                    x.meal = meal;
+                  })
 
-            const ordersInMaking = x.filter(order => order.startedMaking);
-            const ordersNotInMaking = x.filter(order => !order.startedMaking);
-            this.dishesWaitingForMaking = [];
-            this.dishesInMaking = [];
-            let count = 0 ;
-            ordersInMaking.forEach(order => {
-              Object.keys(this.dishesForOrder[order.id].dishes).forEach(dishName => {
-                const dish = this.dishesForOrder[order.id].dishes[dishName];
-                if (!this.isAdmin && dish.category.toLowerCase() !== this.userInfo.role) {
-                  return;
-                }
-                dish.uuid = ((new Date()).getTime()).toString() + count.toString();
-                dish.startedMaking = order.startedMaking;
-                dish.orderId = order.id;
-                dish.tableId = order.tableId;
-                dish.longestDishInOrder = this.dishesForOrder[order.id].longestDishTime.seconds;
-
-                if (dish.status === dishStatus.inProgress) {
-                  console.log(dish);
-                  this.dishesInMaking.push(dish);
-                }
-                else if (dish.status === dishStatus.new) {
-                  console.log(dish);
-                  this.dishesWaitingForMaking.push(dish);
-                }
+                  if (order.status == 0) {
+                    dishes.forEach(x => this.insertIntoNotInMaking(x));
+                  }
+                })
               })
-              count++;
             })
-            this.dishesNotInMaking = [];
-            let counter = 0;
-            ordersNotInMaking.forEach((order: any) => {
-              Object.keys(this.dishesForOrder[order.id].dishes).forEach(dishName => {
-                const dish = this.dishesForOrder[order.id].dishes[dishName];
-                console.log(dish);
-                if (!this.isAdmin && dish.category.toLowerCase() !== this.userInfo.role) {
-                  console.log(dish);
-                  return;
-                }
-                dish.uuid = ((new Date()).getTime()).toString() + counter.toString();
-                dish.startedMaking = order.startedMaking;
-                dish.orderId = order.id;
-                dish.tableId = order.tableId;
-                dish.isLongest = this.dishesForOrder[order.id].longestDishTime.dishId === dishName;
-                dish.orderTime = new Date(order.time.seconds * 1000);
-                this.dishesNotInMaking.push(this.dishesForOrder[order.id].dishes[dishName]);
-              });
-              counter++;
-            });
-            this.orderDishesNotInMaking()
-          });
-        });
+          })
+        })
       });
     });
   }
-  /*.onSnapshot(function(snapshot) {
-          snapshot.docChanges().forEach(function(change) {
-              if (change.type === "added") {*/
-  newIncomingOrder() {
-    const ref = this.fb.fs.collection(this.restRoot + '/' + this.restID + '/Orders');
-    ref.onSnapshot(docs => {
-      docs.docChanges().forEach(doc => {
-        switch (doc.type) {
-          case 'added':
-            console.log('added ', doc.doc.id);
-            const ordersVal = doc.doc.data();
-            this.orders[`${doc.doc.id}`] = {
-              orderTable: ordersVal.tableId,
-              orderTime: ordersVal.time
-            }
-            this.diveInOrders({ orderID: doc.doc.id, ordersVal: ordersVal });
-            break;
-          case 'modified':
-            console.log('modified ', doc.doc.id);
-            break;
-          case 'removed':
-            console.log('removed ', doc.doc.id);
-            break;
-        }
-      })
-    });
+
+  insertIntoNotInMaking(dish: Dish) {
+    const getTotalTime = (x) =>  (parseInt(x.totalTime.split(':')[0]) * 60) + (parseInt(x.totalTime.split(':')[1]))
+    if (this.dishesNotInMaking.length === 0) {
+      this.dishesNotInMaking.push(dish);
+      return;
+    }
+    const indexToInsertIn = this.dishesNotInMaking.findIndex(x => getTotalTime(x) <= getTotalTime(dish));
+    if (indexToInsertIn === -1) {
+      this.dishesNotInMaking.push(dish);
+      return;
+    }
+    this.dishesNotInMaking.splice(indexToInsertIn, 0, dish);
   }
 
-  diveInOrders(order) {
-    const ref = this.fb.fs.collection(this.restRoot + '/' + this.restID + '/Orders/' + order.orderID + '/meals');
-    ref.get()
-      .then(docs => {
-        docs.forEach(doc => {
-          const mealVals = doc.data();
-          this.orders[`${order.orderID}`][`${doc.id}`] = {
-            pic: mealVals.pic,
-            status: mealVals.status
-          }
-          this.diveInMeals({ mealsID: doc.id, mealVal: doc.data(), order: order });
-        })
-      });
-  }
-  diveInMeals(meal) {
-    const ref = this.fb.fs.collection(this.restRoot + '/' + this.restID + '/Orders/' + meal.order.orderID + '/meals/' + meal.mealsID + '/dishes');
-    ref.get()
-      .then(docs => {
-        docs.forEach(doc => {
-          const dishVals = doc.data();
-          this.orders[`${meal.order.orderID}`][`${meal.mealsID}`][`${doc.id}`] = {
-            category: dishVals.category,
-            description: dishVals.description,
-            name: dishVals.name,
-            pic: dishVals.pic,
-            status: dishVals.status,
-            totalTime: dishVals.totalTime
-          }
-          this.dishList.push({
-            name: doc.id,
-            totalTime: dishVals.totalTime,
-            description: dishVals.description,
-            status: dishVals.status,
-            table: meal.order.ordersVal.tableId,
-            time: meal.order.ordersVal.time,
-            pic: dishVals.pic,
-            orderID: meal.order.orderID,
-            mealsID: meal.mealsID
-          });
-          this.diveInDishes({ dish: { dishID: doc.id, dishsVal: dishVals }, mealsID: meal.mealsID, order: meal.order, mealVal: meal.mealVal });
-        });
-      });
-  }
-  diveInDishes(dish) {
-    const ref = this.fb.fs.collection(this.restRoot + '/' + this.restID + '/Orders/' + dish.order.orderID + '/meals/' + dish.mealsID + '/dishes/' + dish.dish.dishID + '/groceries');
-    ref.get()
-      .then(docs => {
-        docs.forEach(doc => {
-          const groceriesVal = doc.data();
-          const dishVals = dish.dish.dishsVal;
-          const mealVals = dish.mealVal;
-          this.orders[`${dish.order.orderID}`][`${dish.mealsID}`][`${dish.dish.dishID}`][`${doc.id}`] = {
-            cookingTime: groceriesVal.cookingTime,
-            cookingType: groceriesVal.cookingType,
-            rawMaterial: groceriesVal.rawMaterial
-          }
-          this.showOnScreen();
-        });
-      });
-  }
-  showOnScreen() {
-
-    // const dishVals = groceries.dish.dishsVal;
-
-    // if (dishVals.status < 2 && dishVals.category == 'Hotplate') {
-
-
-    //   console.log('time: ', groceries.order.orderTime);
-    //   this.warehouse.push(
-    //     {
-    //       rawMaterial: groceries.rawMaterial
-    //     }
-    //   );
-    //   this.mealList.push(
-    //     {
-    //       name: groceries.dish.dishID,
-    //       totalTime: dishVals.totalTime,
-    //       description: dishVals.description,
-    //       status: dishVals.status,
-    //       table: groceries.order.orderTable,
-    //       time: groceries.order.orderTime.Time,
-    //       pic: dishVals.pic,
-    //       orderID: groceries.order.orderID,
-    //       mealsID: groceries.mealsID
-    //     });
-    // }
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    debugger;
   }
 
-
-
-  warehouseStockData() {
-    const ref = this.fb.fs.collection(this.restRoot + '/' + this.restID + '/WarehouseStock');
-    ref.get()
-      .then(docs => {
-        docs.forEach(doc => {
-          console.log('StockData ', doc.id);
-          const StockDataVal = doc.data();
-          this.stockData.push(doc.data());
-          console.log('stockData ', doc.data());
-          console.log('StockDataVal ', doc.data());
-        })
-      });
-  }
-  // updateInP(dish) {
-  //   this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + dish.orderID + '/meals/' + dish.mealsID + '/dishes/' + dish.name)
-  //     .update({
-  //       "status": dishStatus.inProgress
-  //     }).then(function () {
-  //       console.log('updateInP success');
-  //     }).catch(function (err) {
-  //       console.log(err);
-  //     });
-
-  //   this.kitchenService.startMakingOrder(dish.orderID, this.restID);
-  // }
   updateDone(dish) {
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + dish.orderID + '/meals/' + dish.mealsID + '/dishes/' + dish.name)
       .update({
@@ -317,9 +155,9 @@ export class KitchenComponent implements OnInit {
   }
 
   alertStartMaking(dish) {
-    const index = this.dishesNotInMaking.findIndex(x => x.uuid === dish.uuid);
-    this.dishesNotInMaking[index].alerted = true;
-    this.orderDishesNotInMaking();
+    // const index = this.dishesNotInMaking.findIndex(x => x.uuid === dish.uuid);
+    // this.dishesNotInMaking[index].alerted = true;
+    // this.orderDishesNotInMaking();
   }
 
   orderDishesNotInMaking() {
@@ -333,5 +171,5 @@ export class KitchenComponent implements OnInit {
       notAlerted.forEach(x => this.dishesNotInMaking.push(x));
     }
   }
-  
+
 }

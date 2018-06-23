@@ -23,7 +23,7 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
   passedTime: number;
   passedMinutes: number;
   passedSeconds: number;
-  passedColor = 'red';
+  passedColor = 'black';
   remainingTime: number;
   userInfo: UserInfo = null;
 
@@ -43,14 +43,14 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
     this.maxMinutesBeforeStartingMaking = Math.floor(this.dish.maxSecondsBeforeStartingMaking / 60);
     this.maxSecondsBeforeStartingMaking = this.dish.maxSecondsBeforeStartingMaking - (this.maxMinutesBeforeStartingMaking * 60);
     this.timer = setInterval(() => {
-      this.passedTime = Math.floor((Date.now() - this.dish.orderTime) / 1000);
+      const orderTime: any = new Date(this.dish.order.time.seconds * 1000);
+      this.passedTime = Math.floor((Date.now() - orderTime) / 1000);
       this.passedMinutes = Math.floor(this.passedTime / 60);
       this.passedSeconds = this.passedTime - (this.passedMinutes * 60);
-      this.passedColor = this.dish.alerted ? 'red' : 'black';
       this.remainingTime = this.dish.maxSecondsBeforeStartingMaking - this.passedTime;
 
       if (this.remainingTime <= this.secondsBeforeAlerting) {
-        this.onAlertStartMaking.emit(this.dish);
+        this.passedColor = 'red';
       }
 
     }, 1000);

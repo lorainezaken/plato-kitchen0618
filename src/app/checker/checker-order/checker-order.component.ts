@@ -16,6 +16,7 @@ export class CheckerOrderComponent implements OnInit {
   @Input() restId: string;
 
   meals: Meal[];
+  mealsExpanded = false; 
 
   constructor(private mealsService: MealsService, private fb: FirebaseServiceService, private afs: AngularFirestore) { }
 
@@ -33,5 +34,7 @@ export class CheckerOrderComponent implements OnInit {
       })
   }
 
-
+  showMealsDetails() {
+    this.mealsExpanded = !this.mealsExpanded;
+  }
 }
