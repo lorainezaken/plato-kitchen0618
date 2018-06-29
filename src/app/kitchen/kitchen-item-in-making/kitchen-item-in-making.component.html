@@ -20,8 +20,8 @@
     <div class="dishName">
       <h2>{{dish.name}}</h2>
       <div>
-          Passed: {{passedSecondsTotal}}
-          Remaining: {{remainingSecondsTotal}}
+          Passed: {{passedMinutes}}:{{passedSeconds}}
+          Remaining: {{remainingMinutes}}:{{remainingSeconds}}
           {{dish.orderId}}
         </div>
       <h3>Table: {{dish.tableId}}</h3>
@@ -33,8 +33,8 @@
       {{dish.orderId}}
     </div>
     <div class="dishButtons">
-      <div class="dishButton greenBox" (click)="updateDone(dish)"></div>
+      <div class="dishButton greenBox" (click)="updateDone()"></div>
       <div class="dishButton orangeBox" title="change status"></div>
-      <div class="dishButton redBox" title="delete" (click)="deleteDish(dish)"></div>
+      <div class="dishButton redBox" title="delete"></div>
     </div>
   </div>

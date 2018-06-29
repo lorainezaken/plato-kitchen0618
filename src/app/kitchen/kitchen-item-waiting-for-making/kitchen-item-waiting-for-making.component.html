@@ -20,7 +20,7 @@
       <div class="dishName">
         <h2>{{dish.name}}</h2>
         <div>
-            Start Making In: {{secondsRemainingBeforeStartingMaking}}
+            Start Making In: {{minutesRemainingBeforeStartingMaking}}:{{secondsRemainingBeforeStartingMaking}}
         </div>
         <h3>Table: {{dish.tableId}}</h3>
       </div>
@@ -32,7 +32,7 @@
       </div>
       <div class="dishButtons">
         <div class="dishButton greenBox" ></div>
-        <div class="dishButton orangeBox" title="change status" (click)="updateInProgress(dish)"></div>
+        <div class="dishButton orangeBox" title="change status" (click)="startMakingDish()"></div>
         <div class="dishButton redBox" title="delete"></div>
     
       </div>

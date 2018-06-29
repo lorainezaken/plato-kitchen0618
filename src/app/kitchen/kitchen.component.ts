@@ -53,6 +53,8 @@ export class KitchenComponent implements OnInit, OnChanges {
       this.restID = rest;
       this.init();
     });
+    this.restID = this.fb.getRest();
+    this.init();
   }
 
   private init() {
@@ -73,21 +75,36 @@ export class KitchenComponent implements OnInit, OnChanges {
           this.dishesNotInMaking = [];
 
           orders.forEach(order => {
+            order.longestMakingTimeDishInOrder = 0;
+
             this.mealsService.getAll(this.restID, order.id).subscribe(meals => {
               meals.forEach(meal => {
                 this.dishesService.getAll(this.restID, order.id, meal.docId).subscribe(dishes => {
+                  const getTotalTime = (x: Dish) =>
+                    (parseInt(x.totalTime.split(':')[0], 10) * 60) + (parseInt(x.totalTime.split(':')[1], 10));
+
                   dishes.forEach(x => {
                     x.order = order;
                     x.meal = meal;
                     x.uuid = `${order.id}-${meal.docId}-${x.name}`;
+                    x.totalSeconds = getTotalTime(x);
+                    order.longestMakingTimeDishInOrder =
+                      order.longestMakingTimeDishInOrder > x.totalSeconds ? order.longestMakingTimeDishInOrder : x.totalSeconds;
                     this.removeDishFromCollections(x);
                   })
 
-                  if (order.status == 0) {
+                  if (order.status === dishStatus.new) {
                     dishes.forEach(x => this.insertIntoNotInMaking(x));
-                  } else if (order.status === 1) {
-                    dishes.forEach(x => this.insertIntoWaitingForMaking(x));
-                  } 
+                  } else if (order.status === dishStatus.inProgress) {
+                    dishes.forEach(x => {
+                      if (x.status === dishStatus.new) {
+                        this.insertIntoWaitingForMaking(x);
+                      }
+                      else if (x.status === dishStatus.inProgress) {
+                        this.insertIntoInMaking(x);
+                      }
+                    });
+                  }
                 })
               })
             })
@@ -108,12 +125,11 @@ export class KitchenComponent implements OnInit, OnChanges {
   }
 
   insertIntoNotInMaking(dish: Dish) {
-    const getTotalTime = (x) => (parseInt(x.totalTime.split(':')[0]) * 60) + (parseInt(x.totalTime.split(':')[1]))
     if (this.dishesNotInMaking.length === 0) {
       this.dishesNotInMaking.push(dish);
       return;
     }
-    const indexToInsertIn = this.dishesNotInMaking.findIndex(x => getTotalTime(x) <= getTotalTime(dish));
+    const indexToInsertIn = this.dishesNotInMaking.findIndex(x => x.totalSeconds <= dish.totalSeconds);
     if (indexToInsertIn === -1) {
       this.dishesNotInMaking.push(dish);
       return;
@@ -122,17 +138,29 @@ export class KitchenComponent implements OnInit, OnChanges {
   }
 
   insertIntoWaitingForMaking(dish: Dish) {
-    const getTotalTime = (x) => (parseInt(x.totalTime.split(':')[0]) * 60) + (parseInt(x.totalTime.split(':')[1]))
     if (this.dishesWaitingForMaking.length === 0) {
       this.dishesWaitingForMaking.push(dish);
       return;
     }
-    const indexToInsertIn = this.dishesWaitingForMaking.findIndex(x => getTotalTime(x) <= getTotalTime(dish));
+    const indexToInsertIn = this.dishesWaitingForMaking.findIndex(x => x.totalSeconds <= dish.totalSeconds);
     if (indexToInsertIn === -1) {
       this.dishesWaitingForMaking.push(dish);
       return;
     }
     this.dishesWaitingForMaking.splice(indexToInsertIn, 0, dish);
+  }
+
+  insertIntoInMaking(dish: Dish) {
+    if (this.dishesInMaking.length === 0) {
+      this.dishesInMaking.push(dish);
+      return;
+    }
+    const indexToInsertIn = this.dishesInMaking.findIndex(x => x.totalSeconds <= dish.totalSeconds);
+    if (indexToInsertIn === -1) {
+      this.dishesInMaking.push(dish);
+      return;
+    }
+    this.dishesInMaking.splice(indexToInsertIn, 0, dish);
   }
 
   ngOnChanges(changes: SimpleChanges) {

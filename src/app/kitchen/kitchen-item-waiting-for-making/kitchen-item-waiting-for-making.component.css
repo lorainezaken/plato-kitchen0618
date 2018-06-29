@@ -69,6 +69,7 @@
   
   .dishName {
 	text-align: left;
+	width: 370px;
   }
   
   .dishName h3 {
@@ -77,6 +78,7 @@
   
   .dishTime {
 	font-weight: bold;
+	width: 100px;
   }
   
   .dishTimeRed {

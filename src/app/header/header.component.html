@@ -1,13 +1,12 @@
 <div id="header">
-    <ul>
-        <li>Rest:
-            <select (change)="restChanged($event)" [(ngModel)]="selectedRest">
-                <option *ngFor="let rest of userInfo.rests" [value]='rest'>{{rest}}</option>
-            </select>
-        </li>
-        <li><button (click)="logout()">Log Out</button></li>
-        <li>Hello {{userInfo.name}}</li>
-        <li id="role">{{userInfo.role}}</li>
-
-    </ul>
+    <div class='hello-container'>Hello {{userInfo.name}}</div>
+    <div class='rest-container'>Rest:
+        <select (change)="restChanged($event)" [(ngModel)]="selectedRest">
+            <option *ngFor="let rest of userInfo.rests" [value]='rest'>{{rest}}</option>
+        </select>
+    </div>
+    <div id="role" class='role-container'>{{userInfo.role}}</div>
+    <div class='logout-container'>
+        <button class='logout-button' (click)="logout()">Log Out</button>
+    </div>
 </div>

@@ -40,9 +40,13 @@ export class MealsService {
                 .then(() => {
                     this.fb.fs.collection(`/RestAlfa/${restId}/CompleteOrders/orders/${meal.tableId}`).doc(meal.docId).set(meal)
                         .then(() => {
-                            this.fb.fs.collection(`/RestAlfa/${restId}/Orders/${orderId}/meals`).where('status', '==', '2').get()
+                            this.fb.fs.collection(`/RestAlfa/${restId}/Orders/${orderId}/meals`).get()
                                 .then(x => {
-                                    if (x.empty) {
+                                    const docs = x.docs.map(x => x.data());
+                                    if (x.docs.findIndex(x => x.data().status !== 2) !== -1) {
+                                        resolve();
+                                        return;
+                                    } else {
                                         this.fb.fs.doc(`/RestAlfa/${restId}/Orders/${orderId}`).update({ status: 2 })
                                             .then(resolve).catch(reject);
                                     }
