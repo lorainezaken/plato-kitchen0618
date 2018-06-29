@@ -21,6 +21,7 @@ export class Meal {
 }
 
 export class Dish {
+    category: string;
     totalSeconds: number;
     name: string;
     status: number;

@@ -83,7 +83,9 @@ export class KitchenComponent implements OnInit, OnChanges {
                   const getTotalTime = (x: Dish) =>
                     (parseInt(x.totalTime.split(':')[0], 10) * 60) + (parseInt(x.totalTime.split(':')[1], 10));
 
-                  dishes.forEach(x => {
+                  const dishesInRole = dishes.filter(x => x.category.toLowerCase() === this.userInfo.role.toLowerCase());
+
+                  dishesInRole.forEach(x => {
                     x.order = order;
                     x.meal = meal;
                     x.uuid = `${order.id}-${meal.docId}-${x.name}`;
@@ -94,13 +96,12 @@ export class KitchenComponent implements OnInit, OnChanges {
                   })
 
                   if (order.status === dishStatus.new) {
-                    dishes.forEach(x => this.insertIntoNotInMaking(x));
+                    dishesInRole.forEach(x => this.insertIntoNotInMaking(x));
                   } else if (order.status === dishStatus.inProgress) {
-                    dishes.forEach(x => {
+                    dishesInRole.forEach(x => {
                       if (x.status === dishStatus.new) {
                         this.insertIntoWaitingForMaking(x);
-                      }
-                      else if (x.status === dishStatus.inProgress) {
+                      } else if (x.status === dishStatus.inProgress) {
                         this.insertIntoInMaking(x);
                       }
                     });
