@@ -24,6 +24,7 @@ export class Dish {
     order: Order;
     meal: Meal;
     totalTime: string;
+    uuid: string;
 
     constructor(_name, _status) {
         this.name = _name;

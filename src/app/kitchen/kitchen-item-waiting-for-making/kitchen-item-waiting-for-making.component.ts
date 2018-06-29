@@ -21,7 +21,7 @@ export class KitchenItemWaitingForMakingComponent implements OnInit, OnDestroy {
   @Output() onStartedMaking = new EventEmitter();
 
   restRoot;
-  
+
   secondsRemainingBeforeStartingMaking: number;
   timer;
 
@@ -32,7 +32,7 @@ export class KitchenItemWaitingForMakingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.restRoot = this.fb.getRestRoot();
     this.timer = setInterval(() => {
-      const passed = this.inSeconds(Date.now() - this.dish.startedMaking);
+      const passed = this.inSeconds(Date.now() - this.dish.order.startedMaking);
       this.secondsRemainingBeforeStartingMaking = this.dish.longestDishInOrder - this.dish.totalSeconds - passed;
       if (this.secondsRemainingBeforeStartingMaking === 0) {
         this.snackBar.open(`Start Making ${this.dish.name}`, 'Start', { duration: 5000 }).onAction().subscribe(x => {

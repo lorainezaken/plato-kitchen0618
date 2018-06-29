@@ -4,6 +4,7 @@ import { KitchenService } from '../../services/kitchen.service';
 import { dishStatus } from '../kitchen.component';
 import { AuthService } from 'app/services/auth/auth.service';
 import { UserInfo } from 'app/services/auth/UserInfo.model';
+import { DishesService } from '../../services/dishes.service';
 
 @Component({
   selector: 'kitchen-item',
@@ -35,7 +36,7 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
   toTime = (seconds) => `${seconds < 10 ? '0' : ''}${seconds}`;
 
   constructor(private fb: FirebaseServiceService, private kitchenService: KitchenService,
-    private authService: AuthService) { }
+    private authService: AuthService, private dishService: DishesService) { }
 
   ngOnInit() {
     this.authService.getUserInfo().then(x => this.userInfo = x);
@@ -54,6 +55,14 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
       }
 
     }, 1000);
+  }
+
+  startMakingDish() {
+    this.dishService.startMakingDish(this.restID, this.dish.order.id, this.dish.meal.docId, this.dish.name)
+      .catch(x => { 
+        alert("Error updating meal status");
+        console.log(x); 
+      });
   }
 
   updateInP(temp: any) {
