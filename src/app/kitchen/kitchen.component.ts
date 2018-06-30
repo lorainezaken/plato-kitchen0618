@@ -83,7 +83,9 @@ export class KitchenComponent implements OnInit, OnChanges {
                   const getTotalTime = (x: Dish) =>
                     (parseInt(x.totalTime.split(':')[0], 10) * 60) + (parseInt(x.totalTime.split(':')[1], 10));
 
-                  const dishesInRole = dishes.filter(x => x.category.toLowerCase() === this.userInfo.role.toLowerCase());
+                  const dishesInRole = this.isAdmin ?
+                    dishes :
+                    dishes.filter(x => x.category.toLowerCase() === this.userInfo.role.toLowerCase());
 
                   dishesInRole.forEach(x => {
                     x.order = order;

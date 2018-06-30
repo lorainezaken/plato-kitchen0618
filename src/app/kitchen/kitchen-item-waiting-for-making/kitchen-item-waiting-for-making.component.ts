@@ -28,11 +28,13 @@ export class KitchenItemWaitingForMakingComponent implements OnInit, OnDestroy {
   totalSecondsRemainingBeforeStartingMaking: number;
   secondsRemainingBeforeStartingMaking: string;
   minutesRemainingBeforeStartingMaking: number;
+  secondsColor = 'black';
 
   timer;
   userInfo: UserInfo;
 
-  toTime = (seconds) => `${seconds < 10 ? '0' : ''}${seconds}`;  
+
+  toTime = (seconds) => `${seconds < 10 ? '0' : ''}${seconds}`;
 
   constructor(private fb: FirebaseServiceService, private kitchenService: KitchenService, public snackBar: MatSnackBar,
     private dishService: DishesService, private authService: AuthService) { }
@@ -54,8 +56,14 @@ export class KitchenItemWaitingForMakingComponent implements OnInit, OnDestroy {
     this.timer = setInterval(() => {
       const passed = this.inSeconds(Date.now() - this.dish.order.startedMaking);
       this.totalSecondsRemainingBeforeStartingMaking = this.dish.order.longestMakingTimeDishInOrder - this.dish.totalSeconds - passed;
+      console.log(this.totalSecondsRemainingBeforeStartingMaking);
       this.minutesRemainingBeforeStartingMaking = Math.floor(this.totalSecondsRemainingBeforeStartingMaking / 60);
-      this.secondsRemainingBeforeStartingMaking = this.toTime(this.totalSecondsRemainingBeforeStartingMaking - (this.minutesRemainingBeforeStartingMaking * 60));
+      if (this.totalSecondsRemainingBeforeStartingMaking < 0) {
+        this.minutesRemainingBeforeStartingMaking++;
+        this.secondsColor = 'red';
+      }
+      this.secondsRemainingBeforeStartingMaking = this.toTime(
+        Math.abs(this.totalSecondsRemainingBeforeStartingMaking - (this.minutesRemainingBeforeStartingMaking * 60)));
 
       if (this.totalSecondsRemainingBeforeStartingMaking === 0) {
         this.snackBar.open(`Start Making ${this.dish.name}`, 'Start', { duration: 5000 }).onAction().subscribe(x => {
