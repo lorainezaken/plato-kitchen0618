@@ -23,7 +23,7 @@
       Start Making In:
       <span [ngStyle]="{'color': secondsColor }">{{minutesRemainingBeforeStartingMaking}}:{{secondsRemainingBeforeStartingMaking}}</span>
     </div>
-    <h3>Table: {{dish.tableId}}</h3>
+    <h3>Table: {{dish.order.tableId}} Order ID: {{dish.order.id}}</h3>
   </div>
   <div class="dishTime dishTimeRed">
     {{dish.cookName}}

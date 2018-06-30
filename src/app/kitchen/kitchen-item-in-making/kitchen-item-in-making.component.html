@@ -15,26 +15,24 @@
 </div> -->
 
 <div class="dishCont">
-    <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}">
-    </div>
-    <div class="dishName">
-      <h2>{{dish.name}}</h2>
-      <div>
-          Passed: {{passedMinutes}}:{{passedSeconds}}
-          Remaining: {{remainingMinutes}}:{{remainingSeconds}}
-          {{dish.orderId}}
-        </div>
-      <h3>Table: {{dish.tableId}}</h3>
-    </div>
-    <div class="dishTime dishTimeRed">
-        {{dish.cookName}}
-    </div>
-    <div class="dishInstruction">
-      {{dish.orderId}}
-    </div>
-    <div class="dishButtons">
-      <div class="dishButton greenBox" (click)="updateDone()"></div>
-      <div class="dishButton orangeBox" title="change status"></div>
-      <div class="dishButton redBox" title="delete"></div>
-    </div>
+  <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}">
   </div>
+  <div class="dishName">
+    <h2>{{dish.name}}</h2>
+    <div>
+      Passed: {{passedMinutes}}:{{passedSeconds}} Remaining: {{remainingMinutes}}:{{remainingSeconds}} {{dish.orderId}}
+    </div>
+    <h3>Table: {{dish.order.tableId}} Order ID: {{dish.order.id}}</h3>
+  </div>
+  <div class="dishTime dishTimeRed">
+    {{dish.cookName}}
+  </div>
+  <div class="dishInstruction">
+    {{dish.orderId}}
+  </div>
+  <div class="dishButtons">
+    <div class="dishButton greenBox" (click)="updateDone()"></div>
+    <div class="dishButton orangeBox" title="change status"></div>
+    <div class="dishButton redBox" title="delete"></div>
+  </div>
+</div>

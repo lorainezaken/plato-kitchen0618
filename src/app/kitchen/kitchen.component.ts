@@ -83,6 +83,12 @@ export class KitchenComponent implements OnInit, OnChanges {
                   const getTotalTime = (x: Dish) =>
                     (parseInt(x.totalTime.split(':')[0], 10) * 60) + (parseInt(x.totalTime.split(':')[1], 10));
 
+                  dishes.forEach(x => {
+                    x.totalSeconds = getTotalTime(x);
+                    order.longestMakingTimeDishInOrder =
+                      order.longestMakingTimeDishInOrder > x.totalSeconds ? order.longestMakingTimeDishInOrder : x.totalSeconds
+                  });
+
                   const dishesInRole = this.isAdmin ?
                     dishes :
                     dishes.filter(x => x.category.toLowerCase() === this.userInfo.role.toLowerCase());
@@ -91,9 +97,6 @@ export class KitchenComponent implements OnInit, OnChanges {
                     x.order = order;
                     x.meal = meal;
                     x.uuid = `${order.id}-${meal.docId}-${x.name}`;
-                    x.totalSeconds = getTotalTime(x);
-                    order.longestMakingTimeDishInOrder =
-                      order.longestMakingTimeDishInOrder > x.totalSeconds ? order.longestMakingTimeDishInOrder : x.totalSeconds;
                     this.removeDishFromCollections(x);
                   })
 

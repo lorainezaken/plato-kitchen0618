@@ -36,7 +36,8 @@ export class CheckerMealComponent implements OnInit {
     });
   }
 
-  mealIsReadyEvent() {
+  mealIsReadyEvent(e: MouseEvent) {
+    e.stopPropagation();
     if (this.readyDishes !== this.dishes.length) {
       alert('Cant Finish Meal Until All Dishes Are Ready!');
       return;
