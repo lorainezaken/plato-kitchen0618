@@ -45,7 +45,7 @@ export class DishesService {
         return this.afs.doc(`/RestAlfa/${restId}/Orders/${orderId}/meals/${mealId}/dishes/${dishId}`).update({ status: newStatus })
     }
 
-    substractDishFromStock(restId: string, orderId: string, mealId: string, dishId: string, reason: string): Promise<void> {
+    substractDishFromStock(restId: string, orderId: string, mealId: string, dishId: string, reason: string): Promise<any> {
         return new Promise((resolve, reject) => {
             this.afs.collection(`/RestAlfa/${restId}/Orders/${orderId}/meals/${mealId}/dishes/${dishId}/groceries`).ref.get()
                 .then(groceriesDocs => {
@@ -65,6 +65,17 @@ export class DishesService {
 
                     const updatesToMake = Object.keys(materials).length;
                     let updatesMade = 0;
+
+                    Object.keys(materials).forEach(material => {
+                        this.afs.doc(`/RestAlfa/${restId}/WarehouseStock/${material}`).ref.get()
+                            .then(materialDoc => {
+                                const data = materialDoc.data();
+                                if (data.value.amount - materials[material] < 0) {
+                                    reject({ reason: 'You dont have enough ' + material });
+                                    return;
+                                }
+                            }).catch(reject);
+                    });
 
                     Object.keys(materials).forEach(material => {
                         this.afs.doc(`/RestAlfa/${restId}/WarehouseStock/${material}`).ref.get()

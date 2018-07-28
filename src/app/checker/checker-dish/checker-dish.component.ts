@@ -32,6 +32,10 @@ export class CheckerDishComponent implements OnInit {
             console.log(x);
           })
       }).catch(x => {
+        if (x.reason) {
+          alert(x.reason);
+          return;
+        }
         alert('error');
         console.log(x);
       })
@@ -43,6 +47,10 @@ export class CheckerDishComponent implements OnInit {
       .then(x => {
         alert('finished');
       }).catch(x => {
+        if (x.reason) {
+          alert(x.reason);
+          return;
+        }
         alert('error');
         console.log(x);
       })

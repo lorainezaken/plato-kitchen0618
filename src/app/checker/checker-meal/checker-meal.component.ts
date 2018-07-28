@@ -53,6 +53,10 @@ export class CheckerMealComponent implements OnInit {
             this.mealIsReady.emit(this.meal);
           }
         }).catch(x => {
+          if (x.reason) {
+            alert(x.reason);
+            return;
+          }
           console.log(x);
           alert('error');
         })
@@ -71,6 +75,10 @@ export class CheckerMealComponent implements OnInit {
             alert('All Dishes Returned');
           }
         }).catch(x => {
+          if (x.reason) {
+            alert(x.reason);
+            return;
+          }
           console.log(x);
           alert('error');
         })
