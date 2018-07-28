@@ -7,7 +7,11 @@
     margin-left: 30px;
     border-bottom: 2px solid #e5e4e4;
 }
-  
+
+.meal-name {
+  text-align: left;
+}
+
 .meal-container > div {
     background: #fafafa;
     text-align: center;
@@ -38,6 +42,7 @@
 
 .meal-out-of {
   grid-area: outof;
+  margin-top: 25px;
 }
 
 .ready-container {

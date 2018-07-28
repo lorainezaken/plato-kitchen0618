@@ -8,32 +8,33 @@
       <div>{{dish.orderId}}</div>
     </div>
     <div class="dishButtons clearAfter"> -->
-      <!-- <div class="redBox" title="delete" (click)="deleteDish(dish)"></div> -->
-      <!-- <div class="orangeBox" title="change status" (click)="updateInProgress(dish)"></div> -->
-      <!-- <div class="greenBox" (click)="updateDone(dish)"></div> -->
-    <!-- </div>
+<!-- <div class="redBox" title="delete" (click)="deleteDish(dish)"></div> -->
+<!-- <div class="orangeBox" title="change status" (click)="updateInProgress(dish)"></div> -->
+<!-- <div class="greenBox" (click)="updateDone(dish)"></div> -->
+<!-- </div>
   </div> -->
 
-  <div class="dishCont">
-      <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}">
-      </div>
-      <div class="dishName">
-        <h2>{{dish.name}}</h2>
-        <div>
-            Start Making In: {{secondsRemainingBeforeStartingMaking}}
-        </div>
-        <h3>Table: {{dish.tableId}}</h3>
-      </div>
-      <div class="dishTime dishTimeRed">
-          {{dish.cookName}}
-      </div>
-      <div class="dishInstruction">
-        {{dish.orderId}}
-      </div>
-      <div class="dishButtons">
-        <div class="dishButton greenBox" ></div>
-        <div class="dishButton orangeBox" title="change status" (click)="updateInProgress(dish)"></div>
-        <div class="dishButton redBox" title="delete"></div>
-    
-      </div>
+<div class="dishCont">
+  <div class="photo" [ngStyle]="{'background-image': 'url(' + dish.pic + ')'}">
+  </div>
+  <div class="dishName">
+    <h2>{{dish.name}}</h2>
+    <div>
+      Start Making In:
+      <span [ngStyle]="{'color': secondsColor }">{{minutesRemainingBeforeStartingMaking}}:{{secondsRemainingBeforeStartingMaking}}</span>
     </div>
+    <h3>Table: {{dish.order.tableId}} Order ID: {{dish.order.id}}</h3>
+  </div>
+  <div class="dishTime dishTimeRed">
+    {{dish.cookName}}
+  </div>
+  <div class="dishInstruction">
+    {{dish.orderId}}
+  </div>
+  <div class="dishButtons">
+    <div class="dishButton greenBox"></div>
+    <div class="dishButton orangeBox" title="change status" (click)="startMakingDish()"></div>
+    <div class="dishButton redBox" title="delete"></div>
+
+  </div>
+</div>

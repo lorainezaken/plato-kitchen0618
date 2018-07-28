@@ -1,5 +1,5 @@
 <div (click)="showMealsDetails()">
-  order ID: {{order.id}}, Table Number: {{order.tableId}}  
+  <h3 class='order-details'>order ID: {{order.id}}, Table Number: {{order.tableId}} </h3>
 
   <div *ngFor="let meal of meals">
     <app-checker-meal [restId]="restId" [meal]="meal" [orderId]="order.id" (mealIsReady)="mealIsReady($event)" [isExpanded]="mealsExpanded">

@@ -5,6 +5,7 @@ export class Order {
     meals: Meal[] = [];
     tableId: string;
     status: number;
+    longestMakingTimeDishInOrder: number;
 }
 export class Meal {
     mealId: string;
@@ -12,6 +13,7 @@ export class Meal {
     status: number;
     tableId: string;
     dishes: Dish[];
+    pic: string;
 
     constructor(_dishes) {
         this.dishes = _dishes;
@@ -19,6 +21,8 @@ export class Meal {
 }
 
 export class Dish {
+    category: string;
+    totalSeconds: number;
     name: string;
     status: number;
     order: Order;

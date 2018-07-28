@@ -1,25 +1,42 @@
 #header{
-    display:block;
+    display:grid;
+    grid-template-areas: 'hello rest role logout';
+    grid-template-columns: 7% 19% 39% 36%;
 	height: 50px;
 	background: #4a4a4a;
 	width: 100%;
     text-align: center;
 }
 
-#header ul{ list-style-type: none;}
 
-#header ul li {float:left;margin:0 0 0 10px;line-height: 45px;}
+#header div {margin:0 0 0 10px;line-height: 45px;color:#ffff;}
 
-#header ul li {color:#ffff;}
-
-#header ul li a:active {
-    font-weight:bold;
-}
 #role{
     color: #ffffff;
     position: relative;
-    right: 200px;
     font-size:40px;
     position: relative;
-    left: 300px;
+}
+
+.rest-container {
+    grid-area: 'rest';
+}
+
+.logout-container {
+    margin-left: 280px;
+    grid-area: 'logout';
+}
+
+.hello-container {
+    grid-area: 'hello';
+}
+
+.role-container {
+    grid-area: 'role';
+}
+
+.logout-button {
+    float: right;
+    margin-right: 100px;
+    margin-top: 14px;
 }

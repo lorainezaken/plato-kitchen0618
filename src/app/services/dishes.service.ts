@@ -21,7 +21,7 @@ export class DishesService {
         return ordersCollection.valueChanges();
     }
 
-    startMakingDish(restId: string, orderId: string, mealId: string, dishId: string): Promise<void> {
+    startMakingDish(restId: string, orderId: string, mealId: string, dishId: string, cookName: string): Promise<void> {
         return new Promise((resolve, reject) => {
             const batch = this.afs.firestore.batch();
             const orderDoc = this.afs.doc(`/${this.fb.getRestRoot()}/${restId}/Orders/${orderId}`).ref;
@@ -34,7 +34,7 @@ export class DishesService {
                 const dishDoc = mealDoc.collection('dishes').doc(dishId);
                 batch.update(orderDoc, { status: dishStatus.inProgress });
                 batch.update(mealDoc, { status: dishStatus.inProgress });
-                batch.update(dishDoc, { status: dishStatus.inProgress });
+                batch.update(dishDoc, { status: dishStatus.inProgress, cookName });
 
                 batch.commit().then(resolve).catch(reject);
             });
@@ -86,5 +86,12 @@ export class DishesService {
                     })
                 }).catch(reject);
         });
+    }
+
+    finishDish(restId: string, orderId: string, mealId: string, dishId: string) {
+        const batch = this.afs.firestore.batch();
+        const dish = this.afs.doc(`/RestAlfa/${restId}/Orders/${orderId}/meals/${mealId}/dishes/${dishId}`);
+        batch.update(dish.ref, { status: dishStatus.done });
+        return batch.commit();
     }
 }

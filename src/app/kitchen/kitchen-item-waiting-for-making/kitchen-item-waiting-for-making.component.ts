@@ -3,6 +3,9 @@ import { FirebaseServiceService } from '../../services/firebaseService/firebase-
 import { KitchenService } from '../../services/kitchen.service';
 import { dishStatus } from '../kitchen.component';
 import { MatSnackBar } from '@angular/material';
+import { DishesService } from 'app/services/dishes.service';
+import { AuthService } from 'app/services/auth/auth.service';
+import { UserInfo } from 'app/services/auth/UserInfo.model';
 
 
 @Component({
@@ -22,24 +25,60 @@ export class KitchenItemWaitingForMakingComponent implements OnInit, OnDestroy {
 
   restRoot;
 
-  secondsRemainingBeforeStartingMaking: number;
-  timer;
+  totalSecondsRemainingBeforeStartingMaking: number;
+  secondsRemainingBeforeStartingMaking: string;
+  minutesRemainingBeforeStartingMaking: number;
+  secondsColor = 'black';
 
-  constructor(private fb: FirebaseServiceService, private kitchenService: KitchenService, public snackBar: MatSnackBar) { }
+  timer;
+  userInfo: UserInfo;
+
+
+  toTime = (seconds) => `${seconds < 10 ? '0' : ''}${seconds}`;
+
+  constructor(private fb: FirebaseServiceService, private kitchenService: KitchenService, public snackBar: MatSnackBar,
+    private dishService: DishesService, private authService: AuthService) { }
 
   inSeconds(x) { return Math.floor(x / 1000); }
 
   ngOnInit() {
+    this.authService.isLoggedIn().subscribe(isLoggedIn => {
+      if (!isLoggedIn) {
+        return;
+      }
+
+      this.authService.getUserInfo().then(userInfo => {
+        this.userInfo = userInfo;
+      })
+    });
+
     this.restRoot = this.fb.getRestRoot();
     this.timer = setInterval(() => {
       const passed = this.inSeconds(Date.now() - this.dish.order.startedMaking);
-      this.secondsRemainingBeforeStartingMaking = this.dish.longestDishInOrder - this.dish.totalSeconds - passed;
-      if (this.secondsRemainingBeforeStartingMaking === 0) {
+      this.totalSecondsRemainingBeforeStartingMaking = this.dish.order.longestMakingTimeDishInOrder - this.dish.totalSeconds - passed;
+      console.log(this.totalSecondsRemainingBeforeStartingMaking);
+      this.minutesRemainingBeforeStartingMaking = Math.floor(this.totalSecondsRemainingBeforeStartingMaking / 60);
+      if (this.totalSecondsRemainingBeforeStartingMaking < 0) {
+        this.minutesRemainingBeforeStartingMaking++;
+        this.secondsColor = 'red';
+      }
+      this.secondsRemainingBeforeStartingMaking = this.toTime(
+        Math.abs(this.totalSecondsRemainingBeforeStartingMaking - (this.minutesRemainingBeforeStartingMaking * 60)));
+
+      if (this.totalSecondsRemainingBeforeStartingMaking === 0) {
         this.snackBar.open(`Start Making ${this.dish.name}`, 'Start', { duration: 5000 }).onAction().subscribe(x => {
-          this.updateInProgress(this.dish);
+          this.startMakingDish();
         });
       }
     }, 1000);
+  }
+
+  startMakingDish() {
+    this.dishService.startMakingDish(this.restID, this.dish.order.id, this.dish.meal.docId, this.dish.name, this.userInfo.name)
+      .catch(x => {
+        alert('Error updating meal status');
+        console.log(x);
+      });
   }
 
   updateInProgress(temp: any) {

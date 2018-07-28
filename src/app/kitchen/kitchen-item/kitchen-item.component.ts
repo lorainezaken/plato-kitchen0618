@@ -58,9 +58,9 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
   }
 
   startMakingDish() {
-    this.dishService.startMakingDish(this.restID, this.dish.order.id, this.dish.meal.docId, this.dish.name)
-      .catch(x => { 
-        alert("Error updating meal status");
+    this.dishService.startMakingDish(this.restID, this.dish.order.id, this.dish.meal.docId, this.dish.name, this.userInfo.name)
+      .catch(x => {
+        alert('Error updating meal status');
         console.log(x); 
       });
   }
