@@ -9,14 +9,14 @@
     {{readyDishes}}/{{dishes.length}}
   </div>
   <div class="ready-container">
-    <div class="green-box dishButton" (click)="mealIsReadyEvent()"></div>
+    <div class="green-box dishButton" (click)="mealIsReadyEvent($event)"></div>
   </div>
   <div class="return-container">
-    <div class="return-box dishButton"></div>
+    <div class="return-box dishButton" (click)="returnMeal($event)"></div>
   </div>
   <div class="dish-list-container" *ngIf="isExpanded">
     <div *ngFor="let dish of dishes">
-      <app-checker-dish [restId]="restId" [dish]="dish"></app-checker-dish>
+      <app-checker-dish [restId]="restId" [orderId]="orderId" [mealId]="meal.docId" [dish]="dish"></app-checker-dish>
     </div>
   </div>
 </div>

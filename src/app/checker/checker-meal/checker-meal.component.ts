@@ -36,7 +36,39 @@ export class CheckerMealComponent implements OnInit {
     });
   }
 
-  mealIsReadyEvent() {
-    this.mealIsReady.emit(this.meal);
+  mealIsReadyEvent(e: Event) {
+    e.stopPropagation();
+    let returnedDishes = 0;
+
+    this.dishes.forEach(x => {
+      this.dishesService.substractDishFromStock(this.restId, this.orderId, this.meal.docId, x.name, 'completed')
+        .then(x => {
+          returnedDishes++;
+          if (returnedDishes === this.dishes.length) {
+            this.mealIsReady.emit(this.meal);
+          }
+        }).catch(x => {
+          console.log(x);
+          alert('error');
+        })
+    });
+  }
+
+  returnMeal(e: Event) {
+    e.stopPropagation();
+    let returnedDishes = 0;
+
+    this.dishes.forEach(x => {
+      this.dishesService.substractDishFromStock(this.restId, this.orderId, this.meal.docId, x.name, 'returned-dish')
+        .then(x => {
+          returnedDishes++;
+          if (returnedDishes === this.dishes.length) {
+            alert('All Dishes Returned');
+          }
+        }).catch(x => {
+          console.log(x);
+          alert('error');
+        })
+    });
   }
 }

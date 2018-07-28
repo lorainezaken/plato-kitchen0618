@@ -11,6 +11,6 @@
         <span class="dish-status-completed" *ngIf="dish.status === 2"></span>
       </td>
     </table>
-    <div class="dish-ok"></div>
-    <div class="dish-return"></div>        
+    <div class="dish-ok" (click)="complete($event)"></div>
+    <div class="dish-return" (click)="returnDish($event)"></div>        
   </div>
