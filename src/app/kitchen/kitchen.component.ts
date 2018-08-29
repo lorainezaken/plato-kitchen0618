@@ -57,7 +57,9 @@ export class KitchenComponent implements OnInit, OnChanges {
     this.init();
   }
 
+  //Init and set all dishes state
   private init() {
+    //Check user is logged in
     this.authService.isLoggedIn().subscribe(isLoggedIn => {
       if (!isLoggedIn) {
         this.router.navigate(['login']);
@@ -70,29 +72,36 @@ export class KitchenComponent implements OnInit, OnChanges {
 
         this.restRoot = this.fb.getRestRoot();
         this.ordersService.getAll(this.restID).subscribe(orders => {
+          //Declare 3 main arrays. Each dish is going into one of them according to it's state
           this.dishesInMaking = [];
           this.dishesWaitingForMaking = [];
           this.dishesNotInMaking = [];
 
+          //Loop all orders
           orders.forEach(order => {
             order.longestMakingTimeDishInOrder = 0;
 
             this.mealsService.getAll(this.restID, order.id).subscribe(meals => {
+              //Loop all meals for order
               meals.forEach(meal => {
                 this.dishesService.getAll(this.restID, order.id, meal.docId).subscribe(dishes => {
+                  //Parse total time helper function
                   const getTotalTime = (x: Dish) =>
                     (parseInt(x.totalTime.split(':')[0], 10) * 60) + (parseInt(x.totalTime.split(':')[1], 10));
 
+                  //Add some helpers ui props for all the dishes
                   dishes.forEach(x => {
                     x.totalSeconds = getTotalTime(x);
                     order.longestMakingTimeDishInOrder =
                       order.longestMakingTimeDishInOrder > x.totalSeconds ? order.longestMakingTimeDishInOrder : x.totalSeconds
                   });
 
+                  //Filter all the dishes according to user's role
                   const dishesInRole = this.isAdmin ?
                     dishes :
                     dishes.filter(x => x.category.toLowerCase() === this.userInfo.role.toLowerCase());
 
+                  //Remove dish from array if it's in one of them(in case it's state changed)
                   dishesInRole.forEach(x => {
                     x.order = order;
                     x.meal = meal;
@@ -100,6 +109,7 @@ export class KitchenComponent implements OnInit, OnChanges {
                     this.removeDishFromCollections(x);
                   })
 
+                  //Insert dish to the correct array according to it's status
                   if (order.status === dishStatus.new) {
                     dishesInRole.forEach(x => this.insertIntoNotInMaking(x));
                   } else if (order.status === dishStatus.inProgress) {
@@ -130,6 +140,7 @@ export class KitchenComponent implements OnInit, OnChanges {
     })
   }
 
+  //Insert into not in making dish array
   insertIntoNotInMaking(dish: Dish) {
     if (this.dishesNotInMaking.length === 0) {
       this.dishesNotInMaking.push(dish);
@@ -143,6 +154,7 @@ export class KitchenComponent implements OnInit, OnChanges {
     this.dishesNotInMaking.splice(indexToInsertIn, 0, dish);
   }
 
+  //Insert into waiting for making dish array
   insertIntoWaitingForMaking(dish: Dish) {
     if (this.dishesWaitingForMaking.length === 0) {
       this.dishesWaitingForMaking.push(dish);
@@ -156,6 +168,7 @@ export class KitchenComponent implements OnInit, OnChanges {
     this.dishesWaitingForMaking.splice(indexToInsertIn, 0, dish);
   }
 
+  //Insert into making dish array
   insertIntoInMaking(dish: Dish) {
     if (this.dishesInMaking.length === 0) {
       this.dishesInMaking.push(dish);

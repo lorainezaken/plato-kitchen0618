@@ -36,7 +36,7 @@ export class CheckerMealComponent implements OnInit {
     });
   }
 
-
+  //Handle meal is ready event
   mealIsReadyEvent(e: Event) {
     e.stopPropagation();
     if (this.readyDishes !== this.dishes.length) {
@@ -63,6 +63,7 @@ export class CheckerMealComponent implements OnInit {
     });
   }
 
+  //Handle meal return event
   returnMeal(e: Event) {
     e.stopPropagation();
     let returnedDishes = 0;

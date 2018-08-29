@@ -20,6 +20,7 @@ export class CheckerDishComponent implements OnInit {
   ngOnInit() {
   }
 
+  //Handle dish return click event
   returnDish(e: Event) {
     e.stopPropagation();
     this.dishService.substractDishFromStock(this.restId, this.orderId, this.mealId, this.dish.name, 'returned-dish')
@@ -41,6 +42,7 @@ export class CheckerDishComponent implements OnInit {
       })
   }
 
+  //Handle dish completed click event
   complete(e) {
     e.stopPropagation();
     this.dishService.substractDishFromStock(this.restId, this.orderId, this.mealId, this.dish.name, 'completed')

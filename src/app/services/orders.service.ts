@@ -15,6 +15,7 @@ export class OrdersService {
     constructor(private fb: FirebaseServiceService, private afs: AngularFirestore) {
     }
 
+    //Get All Orders
     getAll(restId: string): Observable<Order[]> {
         const ordersCollection = this.afs.collection<Order>(`/${this.fb.getRestRoot()}/${restId}/Orders`);
         return ordersCollection.valueChanges();

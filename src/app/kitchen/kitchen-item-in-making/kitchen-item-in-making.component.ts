@@ -32,6 +32,8 @@ export class KitchenItemInMakingComponent implements OnInit {
   ngOnInit() {
     this.restRoot = this.fb.getRestRoot();
     console.log(this.dish);
+
+    /*CALCULATE TIMES FOR UI*/
     const makingDate = this.dish.order.startedMaking;
     setInterval(() => {
       const now = Date.now();
@@ -48,6 +50,7 @@ export class KitchenItemInMakingComponent implements OnInit {
 
   private toSeconds(x: number): number { return Math.floor(x / 1000); }
 
+  //Update dish status to done
   updateDone() {
     this.dishService.finishDish(this.restID, this.dish.order.id, this.dish.meal.docId, this.dish.name)
       .catch(x => {

@@ -16,7 +16,7 @@ export class CheckerOrderComponent implements OnInit {
   @Input() restId: string;
 
   meals: Meal[];
-  mealsExpanded = false; 
+  mealsExpanded = false;
 
   constructor(private mealsService: MealsService, private fb: FirebaseServiceService, private afs: AngularFirestore) { }
 
@@ -24,6 +24,7 @@ export class CheckerOrderComponent implements OnInit {
     this.mealsService.getAll(this.restId, this.order.id).subscribe(x => this.meals = x.filter(meal => meal.status !== dishStatus.done));
   }
 
+  //Handle meal is ready event
   mealIsReady(meal) {
     const restRoot = this.fb.getRestRoot();
     const orderId = this.order.id;

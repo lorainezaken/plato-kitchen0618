@@ -21,15 +21,18 @@ export class FirebaseServiceService {
     this.restIdObservable.subscribe();
   }
 
+  //Get Root DB Path
   getRestRoot(): string {
     return this.restRoot;
   }
 
+  //Change rest
   setRest(rest: string) {
     this.restID = rest;
     this.restIdObserver.next(this.restID);
   }
 
+  //Get current rest as observable
   getRestObservable(): Observable<string> {
     return this.restIdObservable;
   }

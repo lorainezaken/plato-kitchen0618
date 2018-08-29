@@ -53,6 +53,8 @@ export class KitchenItemWaitingForMakingComponent implements OnInit, OnDestroy {
     });
 
     this.restRoot = this.fb.getRestRoot();
+
+    /*CALCULATE TIMES FOR UI*/
     this.timer = setInterval(() => {
       const passed = this.inSeconds(Date.now() - this.dish.order.startedMaking);
       this.totalSecondsRemainingBeforeStartingMaking = this.dish.order.longestMakingTimeDishInOrder - this.dish.totalSeconds - passed;
@@ -73,6 +75,7 @@ export class KitchenItemWaitingForMakingComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
+  //Update dish status to start making
   startMakingDish() {
     this.dishService.startMakingDish(this.restID, this.dish.order.id, this.dish.meal.docId, this.dish.name, this.userInfo.name)
       .catch(x => {

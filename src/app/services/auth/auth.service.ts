@@ -13,6 +13,7 @@ export class AuthService {
   private user: Observable<firebase.User>;
   private userDetails: firebase.User = null;
 
+  //Authenticating using firebase auth mechanism
   constructor(private _firebaseAuth: AngularFireAuth, private router: Router, private afs: AngularFirestore) {
     this.user = _firebaseAuth.authState;
     this.user.subscribe(
@@ -32,6 +33,7 @@ export class AuthService {
     return this._firebaseAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
+  //Check if user is logged in
   isLoggedIn(): Observable<boolean> {
     return Observable.create(observer => {
       this.user.subscribe(
@@ -52,6 +54,7 @@ export class AuthService {
     return this._firebaseAuth.auth.signOut();
   }
 
+  //Get user info according to user logged in
   getUserInfo(): Promise<UserInfo> {
     return new Promise<UserInfo>((resolve, reject) => {
       const email = this.userDetails.email;

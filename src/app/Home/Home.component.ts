@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit {
         });
     }
 
+    //Navigate to user's role page(checker/cook)
     goToRolePage() {
         if (this.userInfo.role === 'checker') {
             this.router.navigate(['checker']);

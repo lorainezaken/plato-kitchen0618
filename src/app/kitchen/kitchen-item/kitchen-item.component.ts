@@ -41,6 +41,8 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.authService.getUserInfo().then(x => this.userInfo = x);
     this.restRoot = this.fb.getRestRoot();
+
+    /*CALCULATE TIMES FOR UI*/
     this.maxMinutesBeforeStartingMaking = Math.floor(this.dish.maxSecondsBeforeStartingMaking / 60);
     this.maxSecondsBeforeStartingMaking = this.dish.maxSecondsBeforeStartingMaking - (this.maxMinutesBeforeStartingMaking * 60);
     this.timer = setInterval(() => {
@@ -57,11 +59,12 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
+  //Update dish status to in making
   startMakingDish() {
     this.dishService.startMakingDish(this.restID, this.dish.order.id, this.dish.meal.docId, this.dish.name, this.userInfo.name)
       .catch(x => {
         alert('Error updating meal status');
-        console.log(x); 
+        console.log(x);
       });
   }
 
@@ -83,6 +86,8 @@ export class KitchenItemComponent implements OnInit, OnDestroy {
         console.log(err);
       });
   }
+
+  //Update status to done
   updateDone(dish) {
     this.fb.fs.doc(this.restRoot + '/' + this.restID + '/Orders/' + this.dish.orderId + '/meals/' + this.dish.mealId + '/dishes/' + this.dish.name)
       .update({

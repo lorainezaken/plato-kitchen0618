@@ -19,6 +19,7 @@ export class MealsService {
         this.finishMealFunction = this.functions.httpsCallable('finishMeal');
     }
 
+    //Get All Meals
     getAll(restId: string, orderId: string): Observable<Meal[]> {
         const ordersCollection = this.afs.collection<Meal>(`/${this.fb.getRestRoot()}/${restId}/Orders/${orderId}/meals`);
         return Observable.create(observer => {
@@ -34,6 +35,7 @@ export class MealsService {
         });
     }
 
+    //Update that meal is ready
     mealIsReady(restId: string, orderId: string, meal: Meal): Promise<void> {
         return new Promise((resolve, reject) => {
             this.fb.fs.doc(`/RestAlfa/${restId}/Orders/${orderId}/meals/${meal.docId}`).update({ status: 2 })
@@ -43,6 +45,7 @@ export class MealsService {
                             this.fb.fs.collection(`/RestAlfa/${restId}/Orders/${orderId}/meals`).get()
                                 .then(x => {
                                     const docs = x.docs.map(x => x.data());
+                                    //If all meals are ready then update order status to done
                                     if (x.docs.findIndex(x => x.data().status !== 2) !== -1) {
                                         resolve();
                                         return;

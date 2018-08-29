@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  //Handle Rest change event
   restChanged(event) {
     this.firebaseSettings.setRest(this.selectedRest);
   }
